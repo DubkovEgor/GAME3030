@@ -15,6 +15,9 @@ public class Menu : MonoBehaviour
         UI_Screen.SetActive(false);
         Time.timeScale = 0f;
 
+
+        SoundManager.Instance.PlayMusic("PauseMusic");
+
     }
 
     public void Resume()
@@ -22,27 +25,34 @@ public class Menu : MonoBehaviour
         pauseMenu.SetActive(false);
         UI_Screen.SetActive(true);
         Time.timeScale = 1f;
+        SoundManager.Instance.PlayMusic("StartAge/StartAge2");
     }
 
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
+        SoundManager.Instance.PlayMusic("MenuMusic");
     }
 
     public void GameScene()
     {
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;
+
+        SoundManager.Instance.StopMusicAwake();
+        SoundManager.Instance.PlayMusic("StartAge/StartAge2");
     }
     public void WinScene()
     {
         SceneManager.LoadScene(3);
         Time.timeScale = 1f;
+        // SoundManager.Instance.PlayMusic("name");
     }
     public void LoseScene()
     {
         SceneManager.LoadScene(2);
         Time.timeScale = 1f;
+        // SoundManager.Instance.PlayMusic("name");
     }
 
     public void QuitGame()
@@ -70,6 +80,7 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;
+        SoundManager.Instance.PlayMusic("GameMusic");
     }
 
 

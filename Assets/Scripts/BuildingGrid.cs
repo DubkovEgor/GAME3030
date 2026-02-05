@@ -24,7 +24,7 @@ public class BuildingsGrid : MonoBehaviour
     private int gridHeight => GridSize.y;
     private float cellSize => 1f;
 
-    private Vector2Int? pathStartCell = null;
+   //  private Vector2Int? pathStartCell = null;
     private Building pathPrefab;
     private List<Vector2Int> previewCells = new List<Vector2Int>();
 
