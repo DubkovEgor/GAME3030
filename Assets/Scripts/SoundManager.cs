@@ -34,6 +34,13 @@ public class SoundManager : MonoBehaviour
     public AudioSource musicAwakeSource;
     // SoundManager.Instance.PlayMusic("name");
 
+    [Header("Current Volumes")]
+    [Range(0f, 1f)]
+    public float musicVolume = 1f;
+    [Range(0f, 1f)]
+    public float sfxVolume = 1f;
+
+
 
     [Header("Fade Settings")]
     public float fadeDuration = 1f;
@@ -82,7 +89,22 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void Play(string soundName)
+
+    public void MusicVolume(float volume)
+    {
+        musicVolume = volume; // save current user volume
+        musicSource.volume = volume;
+        musicAwakeSource.volume = volume;
+    }
+
+    public void SFXVolume(float volume)
+    {
+        sfxVolume = volume; // save current user volume
+        sfxSource.volume = volume;
+        sfxLoopSource.volume = volume;
+    }
+
+    public void PlaySFX(string soundName)
     {
         if (soundLookup.TryGetValue(soundName, out AudioPlay sound))
         {
@@ -167,8 +189,9 @@ public class SoundManager : MonoBehaviour
         musicSource.loop = true;
         musicSource.Play();
 
-        yield return StartCoroutine(FadeInMusic(1f));
+        yield return StartCoroutine(FadeInMusic(musicVolume));
     }
+
 
     private IEnumerator FadeOutMusic()
     {
@@ -185,6 +208,7 @@ public class SoundManager : MonoBehaviour
 
     private IEnumerator FadeInMusic(float targetVolume)
     {
+        targetVolume = musicVolume; // use the user-set volume
         for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
             musicSource.volume = Mathf.Lerp(0, targetVolume, t / fadeDuration);
@@ -193,6 +217,7 @@ public class SoundManager : MonoBehaviour
 
         musicSource.volume = targetVolume;
     }
+
 
 
     public void ToggleMusic()
@@ -207,15 +232,9 @@ public class SoundManager : MonoBehaviour
         sfxLoopSource.mute = !sfxLoopSource.mute;
     }
 
-    public void MusicVolume(float volume)
-    {
-        musicSource.volume = volume;
-        musicAwakeSource.volume = volume;
-    }
 
-    public void SFXVolume(float volume)
+    public bool sfxLookupContains(string name)
     {
-        sfxSource.volume = volume;
-        sfxLoopSource.volume = volume;
+        return soundLookup.ContainsKey(name);
     }
 }

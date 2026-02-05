@@ -15,6 +15,8 @@ public class Menu : MonoBehaviour
         UI_Screen.SetActive(false);
         Time.timeScale = 0f;
 
+        SoundManager.Instance.PlaySFX("MenuButton");
+
 
         SoundManager.Instance.PlayMusic("PauseMusic");
 
@@ -25,12 +27,16 @@ public class Menu : MonoBehaviour
         pauseMenu.SetActive(false);
         UI_Screen.SetActive(true);
         Time.timeScale = 1f;
+
+        SoundManager.Instance.PlaySFX("MenuButton");
         SoundManager.Instance.PlayMusic("StartAge/StartAge2");
     }
 
     public void MainMenu()
     {
         SceneManager.LoadScene(0);
+
+        SoundManager.Instance.PlaySFX("MenuButton");
         SoundManager.Instance.PlayMusic("MenuMusic");
     }
 
@@ -40,23 +46,30 @@ public class Menu : MonoBehaviour
         Time.timeScale = 1f;
 
         SoundManager.Instance.StopMusicAwake();
+
+        SoundManager.Instance.PlaySFX("MenuButton");
         SoundManager.Instance.PlayMusic("StartAge/StartAge2");
     }
     public void WinScene()
     {
         SceneManager.LoadScene(3);
         Time.timeScale = 1f;
+
+        SoundManager.Instance.PlaySFX("MenuButton");
         // SoundManager.Instance.PlayMusic("name");
     }
     public void LoseScene()
     {
         SceneManager.LoadScene(2);
         Time.timeScale = 1f;
+
+        SoundManager.Instance.PlaySFX("MenuButton");
         // SoundManager.Instance.PlayMusic("name");
     }
 
     public void QuitGame()
     {
+
         Application.Quit();
 
     }
@@ -66,6 +79,8 @@ public class Menu : MonoBehaviour
         if (panel != null)
         {
             panel.SetActive(true);
+
+            SoundManager.Instance.PlaySFX("MenuButton");
         }
     }
 
@@ -80,6 +95,8 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene(1);
         Time.timeScale = 1f;
+
+        SoundManager.Instance.PlaySFX("MenuButton");
         SoundManager.Instance.PlayMusic("GameMusic");
     }
 
