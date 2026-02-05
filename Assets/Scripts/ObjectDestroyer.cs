@@ -11,6 +11,8 @@ public class ObjectDestroyer : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetMouseButton(1))
+            return;
         if (Input.GetKeyDown(KeyCode.D))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);

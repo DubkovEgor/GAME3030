@@ -100,7 +100,7 @@ public class EconomyManager : MonoBehaviour
 
     public void Add1000Resources()
     {
-        ResourceCost bonus = new ResourceCost(1000, 1000, 1000);
+        ResourceCost bonus = new ResourceCost(100000, 100000, 100000);
         AddResources(bonus);
     }
 
@@ -110,7 +110,7 @@ public class EconomyManager : MonoBehaviour
     }
     private void CheckWinCondition()
     {
-        if (!winTriggered && currentNPCs >= 150)
+        if (!winTriggered && currentNPCs >= 2500)
         {
             winTriggered = true;
 

@@ -1,7 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class CameraMove : MonoBehaviour
 {
+    [Header("UI")]
+    public Slider speedSlider;     
+    public Text speedText;
+
+
     public float zoomSpeed = 10f;
     public float minZoom = 5f;
     public float maxZoom = 50f;
@@ -21,6 +28,11 @@ public class CameraMove : MonoBehaviour
             yaw = angles.y;
             pitch = angles.x;
         }
+        if (speedSlider != null)
+        {
+            speedSlider.value = cameraXYspeed;
+        }
+        UpdateCameraSpeedText();
     }
 
     void Update()
@@ -55,23 +67,65 @@ public class CameraMove : MonoBehaviour
         }
     }
 
+    public float cameraXYspeed = 10f;
+
     private void HandleOrbit()
     {
         if (Input.GetMouseButton(1))
         {
+            // ---------- WASD PANNING ----------
+            float moveX = Input.GetAxis("Horizontal"); // A/D
+            float moveY = Input.GetAxis("Vertical");   // W/S
+
+            if (moveX != 0f || moveY != 0f)
+            {
+                Vector3 right = transform.right;
+                Vector3 forward = Vector3.Cross(right, Vector3.up).normalized;
+
+                Vector3 move = (right * moveX + forward * moveY) * cameraXYspeed * Time.deltaTime;
+
+                transform.position += move;
+                target.position += move;
+            }
+
+            // ---------- ORBIT ----------
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
-            yaw += mouseX * orbitSpeed;
-            pitch -= mouseY * orbitSpeed;
-            pitch = Mathf.Clamp(pitch, 10f, 80f);
+            if (mouseX != 0f || mouseY != 0f)
+            {
+                yaw += mouseX * orbitSpeed;
+                pitch -= mouseY * orbitSpeed;
+                pitch = Mathf.Clamp(pitch, 10f, 80f);
 
-            Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
-            Vector3 offset = rotation * new Vector3(0f, 0f, -Vector3.Distance(transform.position, target.position));
-            transform.position = target.position + offset;
-            transform.LookAt(target.position);
+                Quaternion rotation = Quaternion.Euler(pitch, yaw, 0f);
+                float distance = Vector3.Distance(transform.position, target.position);
+                Vector3 offset = rotation * new Vector3(0f, 0f, -distance);
+
+                transform.position = target.position + offset;
+                transform.LookAt(target.position);
+            }
         }
     }
+    public void SetCameraSpeed(float newSpeed)
+    {
+        int speedInt = Mathf.RoundToInt(newSpeed); 
+        cameraXYspeed = speedInt;
+
+        if (speedText != null)
+        {
+            speedText.text = speedInt.ToString();
+        }
+    }
+
+    public void UpdateCameraSpeedText()
+    {
+        if (speedText != null)
+        {
+            speedText.text = Mathf.RoundToInt(cameraXYspeed).ToString();
+        }
+    }
+
     private void HandleQuit()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
