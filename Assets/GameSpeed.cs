@@ -50,14 +50,4 @@ public class GameSpeed : MonoBehaviour
         else
             Pause();
     }
-
-    //// Optional: cycle through speeds
-    //public void NextSpeed()
-    //{
-    //    currentSpeedIndex++;
-    //    if (currentSpeedIndex >= speeds.Length)
-    //        currentSpeedIndex = 0;
-
-    //    SetSpeed(currentSpeedIndex);
-    //}
 }

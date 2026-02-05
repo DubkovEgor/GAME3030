@@ -41,10 +41,14 @@ public class SliderController : MonoBehaviour
     public void MusicVolume()
     {
         SoundManager.Instance.MusicVolume(musicSlider.value);
+        PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
+        PlayerPrefs.Save();
     }
     public void SFXVolume()
     {
         SoundManager.Instance.SFXVolume(sfxSlider.value);
+        PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
+        PlayerPrefs.Save();
     }
 
     [SerializeField] private SpriteState spriteState1;

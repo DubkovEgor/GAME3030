@@ -110,7 +110,7 @@ public class EconomyManager : MonoBehaviour
     }
     private void CheckWinCondition()
     {
-        if (!winTriggered && currentNPCs >= 2500)
+        if (!winTriggered && currentNPCs >= 1000)
         {
             winTriggered = true;
 

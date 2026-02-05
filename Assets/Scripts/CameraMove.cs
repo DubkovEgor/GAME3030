@@ -19,7 +19,11 @@ public class CameraMove : MonoBehaviour
 
 
     public Transform target;
-
+    private void Awake()
+    {
+        if (PlayerPrefs.HasKey("CameraSpeed"))
+            cameraXYspeed = PlayerPrefs.GetFloat("CameraSpeed");
+    }
     void Start()
     {
         if (target != null)
@@ -116,6 +120,8 @@ public class CameraMove : MonoBehaviour
         {
             speedText.text = speedInt.ToString();
         }
+        PlayerPrefs.SetFloat("CameraSpeed", speedInt);
+        PlayerPrefs.Save();
     }
 
     public void UpdateCameraSpeedText()
