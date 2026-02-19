@@ -19,7 +19,6 @@ public class SliderController : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
     }
 
-    // Load UI settings when the scene starts
     private void OnEnable()
     {
         if (PlayerPrefs.HasKey("MusicVolume"))
@@ -50,20 +49,4 @@ public class SliderController : MonoBehaviour
         PlayerPrefs.SetFloat("SFXVolume", sfxSlider.value);
         PlayerPrefs.Save();
     }
-
-    [SerializeField] private SpriteState spriteState1;
-    [SerializeField] private Button buttonSound;
-    [SerializeField] private SpriteState spriteState2;
-    [SerializeField] private Button buttonMusic;
-    public void SpriteChangeSFX()
-    {
-
-        buttonSound.spriteState = spriteState1;
-    }
-    public void SpriteChangeMusic()
-    {
-
-        buttonMusic.spriteState = spriteState2;
-    }
-
 }

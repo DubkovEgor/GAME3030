@@ -38,7 +38,7 @@ public class ResourceDisplay : MonoBehaviour
         currentPopulation = population;
         UpdateHousingText();
     }
-    private void UpdateHousingText()
+    public void UpdateHousingText()
     {
         housingText.text = $"Housing: {EconomyManager.Instance.currentNPCs}/{EconomyManager.Instance.housing}";
     }

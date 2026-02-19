@@ -45,7 +45,7 @@ public class CameraMove : MonoBehaviour
 
         HandleZoom();
         HandleOrbit();
-        HandleQuit();
+        // HandleQuit();
         if (Input.GetKeyDown(KeyCode.P))
         {
             EconomyManager.Instance.Add1000Resources();
@@ -77,7 +77,7 @@ public class CameraMove : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
         {
-            // ---------- WASD PANNING ----------
+            // WASD PANNING 
             float moveX = Input.GetAxis("Horizontal"); // A/D
             float moveY = Input.GetAxis("Vertical");   // W/S
 
@@ -92,7 +92,7 @@ public class CameraMove : MonoBehaviour
                 target.position += move;
             }
 
-            // ---------- ORBIT ----------
+            // ORBIT 
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 

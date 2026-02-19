@@ -25,7 +25,7 @@ public class SoundManager : MonoBehaviour
     [Header("Audio Sources")]
 
     public AudioSource sfxSource;
-    // SoundManager.Instance.Play("name");
+    // SoundManager.Instance.PlaySFX("name");
     public AudioSource sfxLoopSource;
     // SoundManager.Instance.PlaySFXLoop("name");
     // SoundManager.Instance.StopSFXLoop();
@@ -136,7 +136,6 @@ public class SoundManager : MonoBehaviour
         if (string.IsNullOrEmpty(soundName))
             return;
 
-        // Check if the input contains multiple options
         string chosenName = soundName;
 
         if (soundName.Contains("/"))
@@ -145,7 +144,6 @@ public class SoundManager : MonoBehaviour
             chosenName = options[UnityEngine.Random.Range(0, options.Length)];
         }
 
-        // Play the chosen music
         if (soundLookup.TryGetValue(chosenName, out AudioPlay sound))
         {
             if (!musicMuted)
@@ -207,7 +205,7 @@ public class SoundManager : MonoBehaviour
 
     private IEnumerator FadeInMusic(float targetVolume)
     {
-        targetVolume = musicVolume; // use the user-set volume
+        targetVolume = musicVolume;
         for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
             musicSource.volume = Mathf.Lerp(0, targetVolume, t / fadeDuration);

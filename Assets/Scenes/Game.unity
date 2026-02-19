@@ -802,6 +802,9 @@ MonoBehaviour:
   - prefab: {fileID: 2875824011003690647, guid: f02116c209ecd9e488fc4d2cd8996133, type: 3}
     countMinSpawn: 15
     countMaxSpawn: 20
+  - prefab: {fileID: 2075660622868541543, guid: 03d17ed267851b44c82afdf0357c15bd, type: 3}
+    countMinSpawn: 1
+    countMaxSpawn: 2
   messageText: {fileID: 1492811499}
   spawnedObjectsParent: {fileID: 928193881}
 --- !u!4 &90501350
@@ -6165,18 +6168,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 783457935}
-        m_TargetAssemblyTypeName: SliderController, Assembly-CSharp
-        m_MethodName: SpriteChangeSFX
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 783457934}
         m_TargetAssemblyTypeName: IconChange, Assembly-CSharp
         m_MethodName: ChangeSpriteSFX
@@ -8050,18 +8041,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicSlider: {fileID: 749925509}
   sfxSlider: {fileID: 1592734785}
-  spriteState1:
-    m_HighlightedSprite: {fileID: 21300000, guid: 9a43ce2f63eaa854c98daae97827b4c9, type: 3}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  buttonSound: {fileID: 584098099}
-  spriteState2:
-    m_HighlightedSprite: {fileID: 21300000, guid: 9a43ce2f63eaa854c98daae97827b4c9, type: 3}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  buttonMusic: {fileID: 910059085}
 --- !u!1 &797326084
 GameObject:
   m_ObjectHideFlags: 0
@@ -8838,18 +8817,6 @@ MonoBehaviour:
       - m_Target: {fileID: 783457935}
         m_TargetAssemblyTypeName: SliderController, Assembly-CSharp
         m_MethodName: ToggleMusic
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 783457935}
-        m_TargetAssemblyTypeName: SliderController, Assembly-CSharp
-        m_MethodName: SpriteChangeMusic
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16810,6 +16777,132 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 0
+--- !u!1 &1827287364
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1827287369}
+  - component: {fileID: 1827287368}
+  - component: {fileID: 1827287367}
+  - component: {fileID: 1827287366}
+  - component: {fileID: 1827287365}
+  m_Layer: 0
+  m_Name: Main Camera (1)
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1827287365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827287364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b1a37334c817b542ac2520938deef05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1827287366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827287364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c089489e42fee4b80b474c7edcf856, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speedSlider: {fileID: 413018387}
+  speedText: {fileID: 2045598518}
+  zoomSpeed: 25
+  minZoom: 5
+  maxZoom: 200
+  orbitSpeed: 5
+  target: {fileID: 681267548}
+  cameraXYspeed: 10
+--- !u!81 &1827287367
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827287364}
+  m_Enabled: 1
+--- !u!20 &1827287368
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827287364}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &1827287369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827287364}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -50, y: 298.3, z: -39.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1840241826
 GameObject:
   m_ObjectHideFlags: 0
@@ -19947,6 +20040,7 @@ SceneRoots:
   - {fileID: 797326085}
   - {fileID: 1114317032}
   - {fileID: 963194228}
+  - {fileID: 1827287369}
   - {fileID: 90501350}
   - {fileID: 1146884228}
   - {fileID: 1549280322}

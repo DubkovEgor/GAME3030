@@ -126,21 +126,6 @@ public class EconomyManager : MonoBehaviour
         }
     }
 
-    //public void IncreaseDifficulty()
-    //{
-    //    GameObject[] allBuildings = GameObject.FindGameObjectsWithTag("Building");
-    //    foreach (var obj in allBuildings)
-    //    {
-    //        Building building = obj.GetComponent<Building>();
-    //        if (building != null && building.HousingProvided > 0)
-    //        {
-    //            building.Cost.gold *= 2;
-    //            building.Cost.stone *= 2;
-    //            building.Cost.wood *= 2;
-    //        }
-    //    }
-    //}
-
 }
 
 [System.Serializable]

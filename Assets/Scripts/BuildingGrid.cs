@@ -33,9 +33,13 @@ public class BuildingsGrid : MonoBehaviour
         grid = new Building[GridSize.x, GridSize.y];
         mainCamera = Camera.main;
 
-        float cellSize = 1f;
-        gridOrigin = transform.position - new Vector3(GridSize.x * cellSize * 0.5f, 0, GridSize.y * cellSize * 0.5f);
+        gridOrigin = transform.position - new Vector3(
+            GridSize.x * cellSize * 0.5f,
+            0,
+            GridSize.y * cellSize * 0.5f
+        );
     }
+
     void Start()
     {
         GenerateRandomMap();
@@ -104,10 +108,13 @@ public class BuildingsGrid : MonoBehaviour
         if (!groundPlane.Raycast(ray, out float distance)) return;
 
         Vector3 worldPos = ray.GetPoint(distance);
+        flyingBuilding.transform.position = new Vector3(worldPos.x, 0, worldPos.z);
         float cellSize = flyingBuilding.CellSize;
+        Vector2Int size = flyingBuilding.CurrentSize;
 
-        int baseX = Mathf.RoundToInt((worldPos.x - gridOrigin.x) / cellSize);
-        int baseY = Mathf.RoundToInt((worldPos.z - gridOrigin.z) / cellSize);
+        int baseX = Mathf.FloorToInt((worldPos.x - gridOrigin.x) / cellSize);
+        int baseY = Mathf.FloorToInt((worldPos.z - gridOrigin.z) / cellSize);
+
 
         int offsetX = 0, offsetY = 0;
         switch (currentRotation)
@@ -121,16 +128,17 @@ public class BuildingsGrid : MonoBehaviour
         int gridX = baseX - offsetX;
         int gridY = baseY - offsetY;
 
+        Vector3 snappedPos = gridOrigin + new Vector3(gridX * cellSize + size.x * 0.5f * cellSize,
+            0,gridY * cellSize + size.y * 0.5f * cellSize);
+        flyingBuilding.transform.position = snappedPos;
+
         bool available = true;
         if (gridX < 0 || gridX + flyingBuilding.CurrentSize.x > GridSize.x) available = false;
         if (gridY < 0 || gridY + flyingBuilding.CurrentSize.y > GridSize.y) available = false;
         if (available && IsPlaceTaken(gridX, gridY)) available = false;
 
-        flyingBuilding.transform.position = new Vector3(
-            (baseX) * cellSize + gridOrigin.x,
-            0,
-            (baseY) * cellSize + gridOrigin.z
-        );
+        flyingBuilding.transform.position = GetCellCenter(baseX, baseY);
+
 
         flyingBuilding.SetTransparent(available);
 
@@ -189,6 +197,7 @@ public class BuildingsGrid : MonoBehaviour
 
         placedBuilding.OnPlaced();
         placedBuilding.SetNormal();
+        SoundManager.Instance.PlaySFX("Place");
 
         flyingBuilding = null;
 
@@ -281,11 +290,8 @@ public class BuildingsGrid : MonoBehaviour
 
             if (AreaIsFree(x, y, size))
             {
-                Vector3 pos = gridOrigin + new Vector3(
-                x * cellSize + cellSize * 0.5f - 0.5f,
-                0f,                            
-                y * cellSize + cellSize * 0.5f - 0.5f
-            );
+                Vector3 pos = GetCellCenter(x, y);
+
 
 
                 GameObject obj = Instantiate(prefab, pos, Quaternion.identity);
@@ -296,6 +302,8 @@ public class BuildingsGrid : MonoBehaviour
                 for (int dx = 0; dx < size.x; dx++)
                     for (int dy = 0; dy < size.y; dy++)
                         grid[x + dx, y + dy] = instance;
+
+                instance.OnPlaced();
 
                 return;
             }
@@ -324,9 +332,6 @@ public class BuildingsGrid : MonoBehaviour
     {
         if (grid == null) return;
 
-        float cellSize = 1f; 
-        Vector3 origin = gridOrigin;
-
         for (int x = 0; x < GridSize.x; x++)
         {
             for (int y = 0; y < GridSize.y; y++)
@@ -336,11 +341,12 @@ public class BuildingsGrid : MonoBehaviour
                 else
                     Gizmos.color = new Color(1f, 1f, 1f, 0.05f);
 
-                Vector3 cellCenter = origin + new Vector3((x + 0.5f) * cellSize, 0, (y + 0.5f) * cellSize);
+                Vector3 cellCenter = GetCellCenter(x, y);
                 Gizmos.DrawCube(cellCenter, new Vector3(cellSize, 0.1f, cellSize));
             }
         }
     }
+
 
 
     //private void HandlePathPlacement()
@@ -445,6 +451,14 @@ public class BuildingsGrid : MonoBehaviour
     //    b.OnPlaced();
     //}
 
+    private Vector3 GetCellCenter(int x, int y)
+    {
+        return gridOrigin + new Vector3(
+            (x + 0.5f) * cellSize,
+            0,
+            (y + 0.5f) * cellSize
+        );
+    }
 
 }
 
