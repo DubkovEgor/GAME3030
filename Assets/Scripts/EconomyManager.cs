@@ -11,6 +11,7 @@ public class EconomyManager : MonoBehaviour
     public int stone = 500;
     public int wood = 500;
     public int food = 2500;
+    public int fuel = 0;
     public int housing = 0;
     public int currentNPCs = 0;
 
@@ -20,6 +21,7 @@ public class EconomyManager : MonoBehaviour
     public float stonePerSec;
     public float woodPerSec;
     public float foodPerSec;
+    public float fuelPerSec;
 
     public event Action OnResourcesChanged;
     public event Action OnWin;
@@ -29,6 +31,7 @@ public class EconomyManager : MonoBehaviour
     private float stoneAccum;
     private float woodAccum;
     private float foodAccum;
+    private float fuelAccum;
     private bool winTriggered = false;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameUI;
@@ -49,7 +52,8 @@ public class EconomyManager : MonoBehaviour
         ironAccum += ironPerSec * delta;
         stoneAccum += stonePerSec * delta;
         woodAccum += woodPerSec * delta;
-        foodAccum += foodPerSec * delta;
+        foodAccum += foodPerSec * delta; 
+        fuelAccum += fuelPerSec * delta;
 
         bool changed = false;
 
@@ -92,6 +96,13 @@ public class EconomyManager : MonoBehaviour
             foodAccum -= add;
             changed = true;
         }
+        if (fuelAccum >= 1f || fuelAccum <= -1f)
+        {
+            int add = Mathf.FloorToInt(fuelAccum);
+            fuel += add;
+            fuelAccum -= add;
+            changed = true;
+        }
 
         if (changed)
             OnResourcesChanged?.Invoke();
@@ -100,7 +111,7 @@ public class EconomyManager : MonoBehaviour
 
     public bool CanAfford(ResourceCost cost)
     {
-        return gold >= cost.gold && iron >= cost.iron && stone >= cost.stone && wood >= cost.wood && food >= cost.food;
+        return gold >= cost.gold && iron >= cost.iron && stone >= cost.stone && wood >= cost.wood && food >= cost.food && fuel >= cost.fuel;
     }
 
     public bool SpendResources(ResourceCost cost)
@@ -112,6 +123,8 @@ public class EconomyManager : MonoBehaviour
         stone -= cost.stone;
         wood -= cost.wood;
         food -= cost.food;
+        fuel -= cost.fuel;
+
         OnResourcesChanged?.Invoke();
         return true;
     }
@@ -123,12 +136,13 @@ public class EconomyManager : MonoBehaviour
         stone += cost.stone;
         wood += cost.wood;
         food += cost.food;
+        fuel += cost.fuel;
         OnResourcesChanged?.Invoke();
     }
 
     public void Add1000Resources()
     {
-        ResourceCost bonus = new ResourceCost(100000, 100000, 100000, 100000, 100000);
+        ResourceCost bonus = new ResourceCost(100000, 100000, 100000, 100000, 100000, 100000);
         AddResources(bonus);
     }
 
@@ -164,18 +178,20 @@ public struct ResourceCost
     public int stone;
     public int wood;
     public int food;
+    public int fuel;
 
-    public ResourceCost(int gold, int iron, int stone, int wood, int food)
+    public ResourceCost(int gold, int iron, int stone, int wood, int food, int fuel)
     {
         this.gold = gold;
         this.iron = iron;
         this.stone = stone;
         this.wood = wood;
         this.food = food;
+        this.fuel = fuel;
     }
 
     public static ResourceCost operator +(ResourceCost a, ResourceCost b)
     {
-        return new ResourceCost(a.gold + b.gold, a.iron + b.iron, a.stone + b.stone, a.wood + b.wood, a.food + b.food);
+        return new ResourceCost(a.gold + b.gold, a.iron + b.iron, a.stone + b.stone, a.wood + b.wood, a.food + b.food, a.fuel + b.fuel);
     }
 }

@@ -120,6 +120,7 @@ public class Building : MonoBehaviour
         EconomyManager.Instance.ironPerSec += Generation.iron;
         EconomyManager.Instance.stonePerSec += Generation.stone;
         EconomyManager.Instance.woodPerSec += Generation.wood;
+        EconomyManager.Instance.fuelPerSec += Generation.fuel;
 
         EconomyManager.Instance.NotifyResourcesChanged();
         
@@ -131,6 +132,7 @@ public class Building : MonoBehaviour
         EconomyManager.Instance.ironPerSec -= Generation.iron;
         EconomyManager.Instance.stonePerSec -= Generation.stone;
         EconomyManager.Instance.woodPerSec -= Generation.wood;
+        EconomyManager.Instance.fuelPerSec -= Generation.fuel;
 
         EconomyManager.Instance.NotifyResourcesChanged();
     }

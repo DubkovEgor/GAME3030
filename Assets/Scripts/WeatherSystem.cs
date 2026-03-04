@@ -21,6 +21,19 @@ public class WeatherSystem : MonoBehaviour
     public GameObject thunderstorm;
     public GameObject snow;
     public GameObject heavySnow;
+    public GameObject cloud;
+
+    [Header("Sky Objects")]
+    public GameObject skyDefault;
+    public GameObject skyCloud;
+    public GameObject skyRain;
+    public GameObject skyHeavyRain;
+    public GameObject skyThunder;
+    public GameObject skySnow;
+    public GameObject skyHeavySnow;
+
+    [Header("Debug Controls")]
+    public KeyCode nextDayKey = KeyCode.L;
 
     private int currentDay = 1;
     private int currentMonth = 1;
@@ -46,6 +59,11 @@ public class WeatherSystem : MonoBehaviour
         {
             NextDay();
         }
+        if (Input.GetKeyDown(nextDayKey))
+        {
+            NextDay();
+        }
+
     }
     void InitializeDate()
     {
@@ -81,11 +99,11 @@ public class WeatherSystem : MonoBehaviour
 
     void UpdateSeason()
     {
-        if (currentMonth <= 3)
+        if (currentMonth == 12 || currentMonth <= 2)
             currentSeason = Season.Winter;
-        else if (currentMonth <= 6)
+        else if (currentMonth <= 5)
             currentSeason = Season.Spring;
-        else if (currentMonth <= 9)
+        else if (currentMonth <= 8)
             currentSeason = Season.Summer;
         else
             currentSeason = Season.Autumn;
@@ -104,25 +122,26 @@ public class WeatherSystem : MonoBehaviour
         switch (currentSeason)
         {
             case Season.Summer:
-                currentWeather = GetWeatherFromRoll(roll, 60, 20, 10, 10, 0, 0);
+                currentWeather = GetWeatherFromRoll(roll, 45, 15, 20, 10, 10, 0, 0);
                 break;
 
             case Season.Autumn:
-                currentWeather = GetWeatherFromRoll(roll, 20, 40, 20, 5, 15, 0);
+                currentWeather = GetWeatherFromRoll(roll, 5, 30, 25, 20, 5, 15, 0);
                 break;
 
             case Season.Winter:
-                currentWeather = GetWeatherFromRoll(roll, 50, 0, 0, 0, 35, 15);
+                currentWeather = GetWeatherFromRoll(roll, 30, 20, 0, 0, 0, 35, 15);
                 break;
 
             case Season.Spring:
-                currentWeather = GetWeatherFromRoll(roll, 50, 30, 10, 10, 0, 0);
+                currentWeather = GetWeatherFromRoll(roll, 40, 15, 25, 10, 10, 0, 0);
                 break;
         }
     }
 
     WeatherType GetWeatherFromRoll(int roll,
         int defaultChance,
+        int cloudChance,
         int rainChance,
         int heavyRainChance,
         int thunderChance,
@@ -133,6 +152,9 @@ public class WeatherSystem : MonoBehaviour
 
         cumulative += defaultChance;
         if (roll < cumulative) return WeatherType.Default;
+
+        cumulative += cloudChance;
+        if (roll < cumulative) return WeatherType.Cloud;
 
         cumulative += rainChance;
         if (roll < cumulative) return WeatherType.Rain;
@@ -158,24 +180,38 @@ public class WeatherSystem : MonoBehaviour
 
         switch (currentWeather)
         {
+            case WeatherType.Default:
+                skyDefault.SetActive(true);
+                break;
+
+            case WeatherType.Cloud:
+                cloud.SetActive(true);
+                skyCloud.SetActive(true);
+                break;
+
             case WeatherType.Rain:
                 rain.SetActive(true);
+                skyRain.SetActive(true);
                 break;
 
             case WeatherType.HeavyRain:
                 heavyRain.SetActive(true);
+                skyHeavyRain.SetActive(true);
                 break;
 
             case WeatherType.Thunderstorm:
                 thunderstorm.SetActive(true);
+                skyThunder.SetActive(true);
                 break;
 
             case WeatherType.Snow:
                 snow.SetActive(true);
+                skySnow.SetActive(true);
                 break;
 
             case WeatherType.HeavySnow:
                 heavySnow.SetActive(true);
+                skyHeavySnow.SetActive(true);
                 break;
         }
 
@@ -184,11 +220,20 @@ public class WeatherSystem : MonoBehaviour
 
     void DisableAllWeather()
     {
+        cloud.SetActive(false);
         rain.SetActive(false);
         heavyRain.SetActive(false);
         thunderstorm.SetActive(false);
         snow.SetActive(false);
         heavySnow.SetActive(false);
+
+        skyDefault.SetActive(false);
+        skyCloud.SetActive(false);
+        skyRain.SetActive(false);
+        skyHeavyRain.SetActive(false);
+        skyThunder.SetActive(false);
+        skySnow.SetActive(false);
+        skyHeavySnow.SetActive(false);
     }
 }
 
@@ -203,6 +248,7 @@ public enum Season
 public enum WeatherType
 {
     Default,
+    Cloud,
     Rain,
     HeavyRain,
     Thunderstorm,

@@ -32,6 +32,7 @@ public class ResourceDisplay : MonoBehaviour
         resourceText.text = $"Food: {eco.food} ({eco.foodPerSec}/s)   " +
                             $"Wood: {eco.wood} ({eco.woodPerSec}/s)   " +
                             $"Stone: {eco.stone} ({eco.stonePerSec}/s)   " +
+                            $"Iron: {eco.fuel} ({eco.fuelPerSec}/s)   " +
                             $"Iron: {eco.iron} ({eco.ironPerSec}/s)   " +
                             $"Gold: {eco.gold} ({eco.goldPerSec}/s)";
     }
