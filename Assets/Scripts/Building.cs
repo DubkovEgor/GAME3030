@@ -117,17 +117,18 @@ public class Building : MonoBehaviour
         EconomyManager.Instance.housing += HousingProvided;
 
         EconomyManager.Instance.goldPerSec += Generation.gold;
+        EconomyManager.Instance.ironPerSec += Generation.iron;
         EconomyManager.Instance.stonePerSec += Generation.stone;
         EconomyManager.Instance.woodPerSec += Generation.wood;
 
         EconomyManager.Instance.NotifyResourcesChanged();
         
     }
-
-    public void OnDestroyed()
+        public void OnDestroyed()
     {
         EconomyManager.Instance.housing -= HousingProvided;
         EconomyManager.Instance.goldPerSec -= Generation.gold;
+        EconomyManager.Instance.ironPerSec -= Generation.iron;
         EconomyManager.Instance.stonePerSec -= Generation.stone;
         EconomyManager.Instance.woodPerSec -= Generation.wood;
 

@@ -81,9 +81,11 @@ public class Description : MonoBehaviour
         string text = $"<b>{cleanName}</b>\n";
 
         string costLine = "";
-        if (building.Cost.gold != 0) costLine += $"Gold: {building.Cost.gold}. ";
-        if (building.Cost.stone != 0) costLine += $"Stone: {building.Cost.stone}. ";
+        if (building.Cost.food != 0) costLine += $"Food: {building.Cost.food}. ";
         if (building.Cost.wood != 0) costLine += $"Wood: {building.Cost.wood}. ";
+        if (building.Cost.stone != 0) costLine += $"Stone: {building.Cost.stone}. ";
+        if (building.Cost.iron != 0) costLine += $"Iron: {building.Cost.iron}. ";
+        if (building.Cost.gold != 0) costLine += $"Gold: {building.Cost.gold}. ";
 
         if (!string.IsNullOrEmpty(costLine))
             text += $"<b>Cost:</b> {costLine.Trim()}\n";
@@ -92,9 +94,11 @@ public class Description : MonoBehaviour
             text += $"Housing: {building.HousingProvided}\n";
 
         string genLine = "";
-        if (building.Generation.gold != 0) genLine += $"Gold: {FormatPerSec(building.Generation.gold)}. ";
-        if (building.Generation.stone != 0) genLine += $"Stone: {FormatPerSec(building.Generation.stone)}. ";
+        if (building.Generation.food != 0) genLine += $"Food: {FormatPerSec(building.Generation.food)}. ";
         if (building.Generation.wood != 0) genLine += $"Wood: {FormatPerSec(building.Generation.wood)}. ";
+        if (building.Generation.stone != 0) genLine += $"Stone: {FormatPerSec(building.Generation.stone)}. ";
+        if (building.Generation.iron != 0) genLine += $"Iron: {FormatPerSec(building.Generation.iron)}. ";
+        if (building.Generation.gold != 0) genLine += $"Gold: {FormatPerSec(building.Generation.gold)}. ";
 
         if (!string.IsNullOrEmpty(genLine))
             text += $"<b>Generation:</b> {genLine.Trim()}\n";
@@ -110,9 +114,11 @@ public class Description : MonoBehaviour
             text += $"Housing: {building.HousingProvided}\n";
 
         string genLine = "";
-        if (building.Generation.gold != 0) genLine += $"Gold: {FormatPerSec(building.Generation.gold)} ";
-        if (building.Generation.stone != 0) genLine += $"Stone: {FormatPerSec(building.Generation.stone)} ";
+        if (building.Generation.food != 0) genLine += $"Food: {FormatPerSec(building.Generation.food)} ";
         if (building.Generation.wood != 0) genLine += $"Wood: {FormatPerSec(building.Generation.wood)} ";
+        if (building.Generation.stone != 0) genLine += $"Stone: {FormatPerSec(building.Generation.stone)} ";
+        if (building.Generation.iron != 0) genLine += $"Iron: {FormatPerSec(building.Generation.iron)} ";
+        if (building.Generation.gold != 0) genLine += $"Gold: {FormatPerSec(building.Generation.gold)} ";
 
         if (!string.IsNullOrEmpty(genLine))
             text += $"<b>Generation:</b> {genLine.Trim()}\n";

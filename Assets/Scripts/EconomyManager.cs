@@ -7,22 +7,28 @@ public class EconomyManager : MonoBehaviour
 
     [Header("Current Resources")]
     public int gold = 1000;
+    public int iron = 500;
     public int stone = 500;
     public int wood = 500;
+    public int food = 2500;
     public int housing = 0;
     public int currentNPCs = 0;
 
     [Header("Resource generation per second")]
     public float goldPerSec;
+    public float ironPerSec;
     public float stonePerSec;
     public float woodPerSec;
+    public float foodPerSec;
 
     public event Action OnResourcesChanged;
     public event Action OnWin;
 
     private float goldAccum;
+    private float ironAccum;
     private float stoneAccum;
     private float woodAccum;
+    private float foodAccum;
     private bool winTriggered = false;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameUI;
@@ -40,8 +46,10 @@ public class EconomyManager : MonoBehaviour
         float delta = Time.deltaTime;
 
         goldAccum += goldPerSec * delta;
+        ironAccum += ironPerSec * delta;
         stoneAccum += stonePerSec * delta;
         woodAccum += woodPerSec * delta;
+        foodAccum += foodPerSec * delta;
 
         bool changed = false;
 
@@ -50,6 +58,14 @@ public class EconomyManager : MonoBehaviour
             int add = Mathf.FloorToInt(goldAccum);
             gold += add;
             goldAccum -= add;
+            changed = true;
+        }
+
+        if (ironAccum >= 1f || ironAccum <= -1f)
+        {
+            int add = Mathf.FloorToInt(ironAccum);
+            iron += add;
+            ironAccum -= add;
             changed = true;
         }
 
@@ -69,6 +85,14 @@ public class EconomyManager : MonoBehaviour
             changed = true;
         }
 
+        if (foodAccum >= 1f || foodAccum <= -1f)
+        {
+            int add = Mathf.FloorToInt(foodAccum);
+            food += add;
+            foodAccum -= add;
+            changed = true;
+        }
+
         if (changed)
             OnResourcesChanged?.Invoke();
         CheckWinCondition();
@@ -76,7 +100,7 @@ public class EconomyManager : MonoBehaviour
 
     public bool CanAfford(ResourceCost cost)
     {
-        return gold >= cost.gold && stone >= cost.stone && wood >= cost.wood;
+        return gold >= cost.gold && iron >= cost.iron && stone >= cost.stone && wood >= cost.wood && food >= cost.food;
     }
 
     public bool SpendResources(ResourceCost cost)
@@ -84,8 +108,10 @@ public class EconomyManager : MonoBehaviour
         if (!CanAfford(cost)) return false;
 
         gold -= cost.gold;
+        iron -= cost.iron;
         stone -= cost.stone;
         wood -= cost.wood;
+        food -= cost.food;
         OnResourcesChanged?.Invoke();
         return true;
     }
@@ -93,14 +119,16 @@ public class EconomyManager : MonoBehaviour
     public void AddResources(ResourceCost cost)
     {
         gold += cost.gold;
+        iron += cost.iron;
         stone += cost.stone;
         wood += cost.wood;
+        food += cost.food;
         OnResourcesChanged?.Invoke();
     }
 
     public void Add1000Resources()
     {
-        ResourceCost bonus = new ResourceCost(100000, 100000, 100000);
+        ResourceCost bonus = new ResourceCost(100000, 100000, 100000, 100000, 100000);
         AddResources(bonus);
     }
 
@@ -132,18 +160,22 @@ public class EconomyManager : MonoBehaviour
 public struct ResourceCost
 {
     public int gold;
+    public int iron;
     public int stone;
     public int wood;
+    public int food;
 
-    public ResourceCost(int gold, int stone, int wood)
+    public ResourceCost(int gold, int iron, int stone, int wood, int food)
     {
         this.gold = gold;
+        this.iron = iron;
         this.stone = stone;
         this.wood = wood;
+        this.food = food;
     }
 
     public static ResourceCost operator +(ResourceCost a, ResourceCost b)
     {
-        return new ResourceCost(a.gold + b.gold, a.stone + b.stone, a.wood + b.wood);
+        return new ResourceCost(a.gold + b.gold, a.iron + b.iron, a.stone + b.stone, a.wood + b.wood, a.food + b.food);
     }
 }
