@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WeatherSystem : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class WeatherSystem : MonoBehaviour
     [Range(1, 10)] public int startDay = 1;
 
     [Header("Time Settings")]
-    public float dayLengthInSeconds = 120f;
     public int daysPerMonth = 10;
     public int monthsPerYear = 12;
 
@@ -32,12 +32,25 @@ public class WeatherSystem : MonoBehaviour
     public GameObject skySnow;
     public GameObject skyHeavySnow;
 
+    [Header("Day-Night Settings")]
+    public Material nightSkyMaterial;
+    public Light directionalLight; 
+    public float hourDuration = 5f; 
+    public float sunriseHour = 6f;
+    public float sunsetHour = 20f;
+
+    [Header("UI References")]
+    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI dateText;
+
     [Header("Debug Controls")]
     public KeyCode nextDayKey = KeyCode.L;
 
     private int currentDay = 1;
     private int currentMonth = 1;
     private int currentYear = 1;
+
+    public float currentHour = 8f;
 
     private Season currentSeason;
     private WeatherType currentWeather = WeatherType.Default;
@@ -53,17 +66,28 @@ public class WeatherSystem : MonoBehaviour
 
     void Update()
     {
-        dayTimer += Time.deltaTime;
+        float delta = Time.deltaTime;
 
-        if (dayTimer >= dayLengthInSeconds)
+        currentHour += delta / hourDuration;
+
+        if (currentHour >= 24f)
         {
-            NextDay();
+            currentHour -= 24f;
+            NextDay(); 
         }
+        UpdateDayNight();
+        //dayTimer += delta;
+        //if (dayTimer >= daysPerMonth * hourDuration)
+        //{
+        //    NextDay();
+        //}
+
         if (Input.GetKeyDown(nextDayKey))
         {
             NextDay();
+            UpdateTimeUI();
         }
-
+        UpdateTimeUI();
     }
     void InitializeDate()
     {
@@ -93,10 +117,77 @@ public class WeatherSystem : MonoBehaviour
 
             UpdateSeason();
         }
+        currentHour = 0f;
 
         StartNewDay();
     }
+    void UpdateDayNight()
+    {
+        float fadeInStart = sunsetHour - 1f;
+        float fadeInEnd = sunsetHour + 1f;
 
+        float fadeOutStart = sunriseHour - 1f;
+        float fadeOutEnd = sunriseHour + 1f;
+
+        if (directionalLight != null)
+        {
+            float sunIntensity = 1f;
+
+            if (currentHour >= fadeInStart && currentHour <= fadeInEnd)
+            {
+                float t = Mathf.InverseLerp(fadeInStart, fadeInEnd, currentHour);
+                sunIntensity = 1f - t;
+            }
+            else if (currentHour > fadeInEnd || currentHour < fadeOutStart)
+            {
+                sunIntensity = 0f;
+            }
+            else if (currentHour >= fadeOutStart && currentHour <= fadeOutEnd)
+            {
+                float t = Mathf.InverseLerp(fadeOutStart, fadeOutEnd, currentHour);
+                sunIntensity = t;
+            }
+            else
+            {
+                sunIntensity = 1f;
+            }
+
+            directionalLight.intensity = sunIntensity;
+        }
+        if (nightSkyMaterial != null)
+        {
+            float nightAlpha = 0f;
+
+            if (currentHour >= fadeInStart && currentHour <= fadeInEnd)
+            {
+                nightAlpha = Mathf.InverseLerp(fadeInStart, fadeInEnd, currentHour);
+            }
+            else if (currentHour > fadeInEnd || currentHour < fadeOutStart)
+            {
+                nightAlpha = 1f;
+            }
+            else if (currentHour >= fadeOutStart && currentHour <= fadeOutEnd)
+            {
+                float t = Mathf.InverseLerp(fadeOutStart, fadeOutEnd, currentHour);
+                nightAlpha = 1f - t;
+            }
+            else
+            {
+                nightAlpha = 0f;
+            }
+
+            SetNightSkyAlpha(nightAlpha);
+        }
+    }
+
+    void SetNightSkyAlpha(float alpha)
+    {
+        if (nightSkyMaterial == null) return;
+
+        Color c = nightSkyMaterial.color;
+        c.a = Mathf.Clamp01(alpha);
+        nightSkyMaterial.color = c;
+    }
     void UpdateSeason()
     {
         if (currentMonth == 12 || currentMonth <= 2)
@@ -235,6 +326,30 @@ public class WeatherSystem : MonoBehaviour
         skySnow.SetActive(false);
         skyHeavySnow.SetActive(false);
     }
+
+    void UpdateTimeUI()
+    {
+        if (timeText != null)
+        {
+            int hour = Mathf.FloorToInt(currentHour);
+            int minute = Mathf.FloorToInt((currentHour - hour) * 60f);
+
+            string hourStr = hour.ToString("00");
+            string minStr = minute.ToString("00");
+
+            timeText.text = $"{hourStr}:{minStr}";
+        }
+
+        if (dateText != null)
+        {
+            string dayStr = currentDay.ToString("00");
+            string monthStr = currentMonth.ToString("00");
+            string yearStr = currentYear.ToString("0000");
+
+            dateText.text = $"{dayStr}/{monthStr}/{yearStr}";
+        }
+    }
+
 }
 
 public enum Season
