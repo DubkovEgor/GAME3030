@@ -239,9 +239,9 @@ public class BuildingsGrid : MonoBehaviour
             EconomyManager.Instance.housing = 0;
             EconomyManager.Instance.currentNPCs = 0;
 
-            EconomyManager.Instance.goldPerSec = 0;
-            EconomyManager.Instance.woodPerSec = 0;
-            EconomyManager.Instance.stonePerSec = 0;
+            EconomyManager.Instance.goldPerHour = 0;
+            EconomyManager.Instance.woodPerHour = 0;
+            EconomyManager.Instance.stonePerHour = 0;
 
             EconomyManager.Instance.NotifyResourcesChanged();
         }

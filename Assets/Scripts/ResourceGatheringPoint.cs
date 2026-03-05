@@ -9,7 +9,7 @@ public class ResourceGatheringPoint : MonoBehaviour
     public ResourceType resourceType;
     public int totalAmount;
     public int amountPerGather;
-    [HideInInspector] public int remaining;
+    public int remaining;
 
     [Header("Access Points (child transforms)")]
     public List<Transform> accessPoints = new();
@@ -71,6 +71,9 @@ public class ResourceGatheringPoint : MonoBehaviour
         bool active = HasResources;
         if (activeVisual) activeVisual.SetActive(active);
         if (depletedVisual) depletedVisual.SetActive(!active);
+
+        if (!active)
+            Destroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()

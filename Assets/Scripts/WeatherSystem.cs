@@ -54,7 +54,9 @@ public class WeatherSystem : MonoBehaviour
 
     private Season currentSeason;
     private WeatherType currentWeather = WeatherType.Default;
-
+    
+    public event Action OnHourPassed;
+    private float _lastHour;
 
     void Start()
     {
@@ -63,25 +65,33 @@ public class WeatherSystem : MonoBehaviour
         StartNewDay();
     }
 
+
     void Update()
     {
         float delta = Time.deltaTime;
-
         currentHour += delta / hourDuration;
+
+        int newHour = Mathf.FloorToInt(currentHour);
+        int oldHour = Mathf.FloorToInt(_lastHour);
+        if (newHour != oldHour)
+            OnHourPassed?.Invoke();
+        _lastHour = currentHour;
 
         if (currentHour >= 24f)
         {
             currentHour -= 24f;
-            NextDay(); 
+            _lastHour = 0f;
+            NextDay();
         }
+
         UpdateDayNight();
+        UpdateTimeUI();
 
         if (Input.GetKeyDown(nextDayKey))
         {
             NextDay();
             UpdateTimeUI();
         }
-        UpdateTimeUI();
     }
     void InitializeDate()
     {

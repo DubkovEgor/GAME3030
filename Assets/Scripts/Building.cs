@@ -135,12 +135,12 @@ public class Building : MonoBehaviour
 
 
 
-        EconomyManager.Instance.foodPerSec += Generation.food;
-        EconomyManager.Instance.goldPerSec += Generation.gold;
-        EconomyManager.Instance.ironPerSec += Generation.iron;
-        EconomyManager.Instance.stonePerSec += Generation.stone;
-        EconomyManager.Instance.woodPerSec += Generation.wood;
-        EconomyManager.Instance.fuelPerSec += Generation.fuel;
+        EconomyManager.Instance.foodPerHour += Generation.food;
+        EconomyManager.Instance.goldPerHour += Generation.gold;
+        EconomyManager.Instance.ironPerHour += Generation.iron;
+        EconomyManager.Instance.stonePerHour += Generation.stone;
+        EconomyManager.Instance.woodPerHour += Generation.wood;
+        EconomyManager.Instance.fuelPerHour += Generation.fuel;
 
         EconomyManager.Instance.NotifyResourcesChanged();
         
@@ -155,12 +155,12 @@ public class Building : MonoBehaviour
         EconomyManager.Instance.goldWorkers -= GoldWorkersProvided;
         EconomyManager.Instance.fuelWorkers -= FuelWorkersProvided;
 
-        EconomyManager.Instance.foodPerSec -= Generation.food;
-        EconomyManager.Instance.goldPerSec -= Generation.gold;
-        EconomyManager.Instance.ironPerSec -= Generation.iron;
-        EconomyManager.Instance.stonePerSec -= Generation.stone;
-        EconomyManager.Instance.woodPerSec -= Generation.wood;
-        EconomyManager.Instance.fuelPerSec -= Generation.fuel;
+        EconomyManager.Instance.foodPerHour -= Generation.food;
+        EconomyManager.Instance.goldPerHour -= Generation.gold;
+        EconomyManager.Instance.ironPerHour -= Generation.iron;
+        EconomyManager.Instance.stonePerHour -= Generation.stone;
+        EconomyManager.Instance.woodPerHour -= Generation.wood;
+        EconomyManager.Instance.fuelPerHour -= Generation.fuel;
 
         EconomyManager.Instance.NotifyResourcesChanged();
     }

@@ -28,23 +28,17 @@ public class EconomyManager : MonoBehaviour
     public int currentGoldWorkers = 0;
     public int currentFuelWorkers = 0;
 
-    [Header("Resource generation per second")]
-    public float goldPerSec;
-    public float ironPerSec;
-    public float stonePerSec;
-    public float woodPerSec;
-    public float foodPerSec;
-    public float fuelPerSec;
+    [Header("Resource Generation Per Hour")]
+    public float goldPerHour;
+    public float ironPerHour;
+    public float stonePerHour;
+    public float woodPerHour;
+    public float foodPerHour;
+    public float fuelPerHour;
 
     public event Action OnResourcesChanged;
     public event Action OnWin;
 
-    private float goldAccum;
-    private float ironAccum;
-    private float stoneAccum;
-    private float woodAccum;
-    private float foodAccum;
-    private float fuelAccum;
     private bool winTriggered = false;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject gameUI;
@@ -56,69 +50,37 @@ public class EconomyManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
-    private void Update()
+    private void Start()
     {
-        float delta = Time.deltaTime;
+        var weather = FindFirstObjectByType<WeatherSystem>();
+        if (weather != null)
+            weather.OnHourPassed += OnHourTick;
+        else
+            Debug.LogWarning("EconomyManager: WeatherSystem not found.");
+    }
+    private void OnDestroy()
+    {
+        var weather = FindFirstObjectByType<WeatherSystem>();
+        if (weather != null)
+            weather.OnHourPassed -= OnHourTick;
+    }
 
-        goldAccum += goldPerSec * delta;
-        ironAccum += ironPerSec * delta;
-        stoneAccum += stonePerSec * delta;
-        woodAccum += woodPerSec * delta;
-        foodAccum += foodPerSec * delta; 
-        fuelAccum += fuelPerSec * delta;
-
+    private void OnHourTick()
+    {
         bool changed = false;
 
-        if (goldAccum >= 1f || goldAccum <= -1f)
-        {
-            int add = Mathf.FloorToInt(goldAccum);
-            gold += add;
-            goldAccum -= add;
-            changed = true;
-        }
+        if (goldPerHour != 0) { gold += Mathf.RoundToInt(goldPerHour); changed = true; }
+        if (ironPerHour != 0) { iron += Mathf.RoundToInt(ironPerHour); changed = true; }
+        if (stonePerHour != 0) { stone += Mathf.RoundToInt(stonePerHour); changed = true; }
+        if (woodPerHour != 0) { wood += Mathf.RoundToInt(woodPerHour); changed = true; }
+        if (foodPerHour != 0) { food += Mathf.RoundToInt(foodPerHour); changed = true; }
+        if (fuelPerHour != 0) { fuel += Mathf.RoundToInt(fuelPerHour); changed = true; }
 
-        if (ironAccum >= 1f || ironAccum <= -1f)
-        {
-            int add = Mathf.FloorToInt(ironAccum);
-            iron += add;
-            ironAccum -= add;
-            changed = true;
-        }
-
-        if (stoneAccum >= 1f || stoneAccum <= -1f)
-        {
-            int add = Mathf.FloorToInt(stoneAccum);
-            stone += add;
-            stoneAccum -= add;
-            changed = true;
-        }
-
-        if (woodAccum >= 1f || woodAccum <= -1f)
-        {
-            int add = Mathf.FloorToInt(woodAccum);
-            wood += add;
-            woodAccum -= add;
-            changed = true;
-        }
-
-        if (foodAccum >= 1f || foodAccum <= -1f)
-        {
-            int add = Mathf.FloorToInt(foodAccum);
-            food += add;
-            foodAccum -= add;
-            changed = true;
-        }
-        if (fuelAccum >= 1f || fuelAccum <= -1f)
-        {
-            int add = Mathf.FloorToInt(fuelAccum);
-            fuel += add;
-            fuelAccum -= add;
-            changed = true;
-        }
-
-        if (changed)
-            OnResourcesChanged?.Invoke();
+        if (changed) OnResourcesChanged?.Invoke();
+    }
+    private void Update()
+    {
+        
         CheckWinCondition();
     }
 

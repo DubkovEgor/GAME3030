@@ -29,12 +29,12 @@ public class ResourceDisplay : MonoBehaviour
     private void UpdateResourcesText()
     {
         var eco = EconomyManager.Instance;
-        resourceText.text = $"Food: {eco.food} ({eco.foodPerSec}/s)   " +
-                            $"Wood: {eco.wood} ({eco.woodPerSec}/s)   " +
-                            $"Stone: {eco.stone} ({eco.stonePerSec}/s)   " +
-                            $"Iron: {eco.fuel} ({eco.fuelPerSec}/s)   " +
-                            $"Iron: {eco.iron} ({eco.ironPerSec}/s)   " +
-                            $"Gold: {eco.gold} ({eco.goldPerSec}/s)";
+        resourceText.text = $"Food: {eco.food} ({eco.foodPerHour}/s)   " +
+                            $"Wood: {eco.wood} ({eco.woodPerHour}/s)   " +
+                            $"Stone: {eco.stone} ({eco.stonePerHour}/s)   " +
+                            $"Iron: {eco.fuel} ({eco.fuelPerHour}/s)   " +
+                            $"Iron: {eco.iron} ({eco.ironPerHour}/s)   " +
+                            $"Gold: {eco.gold} ({eco.goldPerHour}/s)";
     }
     public void SetCurrentPopulation(int population) 
     {
