@@ -55,7 +55,6 @@ public class WeatherSystem : MonoBehaviour
     private Season currentSeason;
     private WeatherType currentWeather = WeatherType.Default;
 
-    private float dayTimer;
 
     void Start()
     {
@@ -76,11 +75,6 @@ public class WeatherSystem : MonoBehaviour
             NextDay(); 
         }
         UpdateDayNight();
-        //dayTimer += delta;
-        //if (dayTimer >= daysPerMonth * hourDuration)
-        //{
-        //    NextDay();
-        //}
 
         if (Input.GetKeyDown(nextDayKey))
         {
@@ -96,11 +90,9 @@ public class WeatherSystem : MonoBehaviour
         currentMonth = Mathf.Clamp(startMonth, 1, monthsPerYear);
         currentDay = Mathf.Clamp(startDay, 1, daysPerMonth);
 
-        dayTimer = 0f;
     }
     void NextDay()
     {
-        dayTimer = 0f;
 
         currentDay++;
 

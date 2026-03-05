@@ -13,7 +13,20 @@ public class EconomyManager : MonoBehaviour
     public int food = 2500;
     public int fuel = 0;
     public int housing = 0;
+    public int woodWorkers = 0;
+    public int stoneWorkers = 0;
+    public int foodWorkers = 0;
+    public int ironWorkers = 0;
+    public int goldWorkers = 0;
+    public int fuelWorkers = 0;
     public int currentNPCs = 0;
+    public int currentIdleNPCs = 0;
+    public int currentWoodWorkers = 0;
+    public int currentStoneWorkers = 0;
+    public int currentFoodWorkers = 0;
+    public int currentIronWorkers = 0;
+    public int currentGoldWorkers = 0;
+    public int currentFuelWorkers = 0;
 
     [Header("Resource generation per second")]
     public float goldPerSec;

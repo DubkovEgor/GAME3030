@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Building : MonoBehaviour
@@ -11,6 +12,12 @@ public class Building : MonoBehaviour
     [HideInInspector] public Vector2Int CurrentSize;
     public ResourceCost Generation;
     public int HousingProvided = 0;
+    public int WoodWorkersProvided = 0;
+    public int StoneWorkersProvided = 0;
+    public int FoodWorkersProvided = 0;
+    public int IronWorkersProvided = 0;
+    public int GoldWorkersProvided = 0;
+    public int FuelWorkersProvided = 0;
     private GameObject highlightParent;
     public Material highlightMaterial;
     private Color[][] originalColors;
@@ -18,6 +25,9 @@ public class Building : MonoBehaviour
 
     [Header("Cost to build")]
     public ResourceCost Cost;
+
+    [Header("Resource Drop-Off")]
+    public List<ResourceDropOff> dropOffs = new();
 
     private void Awake()
      {
@@ -115,7 +125,17 @@ public class Building : MonoBehaviour
     public void OnPlaced()
     {
         EconomyManager.Instance.housing += HousingProvided;
+        EconomyManager.Instance.woodWorkers += WoodWorkersProvided;
+        EconomyManager.Instance.stoneWorkers += StoneWorkersProvided;
+        EconomyManager.Instance.foodWorkers += FoodWorkersProvided;
+        EconomyManager.Instance.ironWorkers += IronWorkersProvided;
+        EconomyManager.Instance.goldWorkers += GoldWorkersProvided;
+        EconomyManager.Instance.fuelWorkers += FuelWorkersProvided;
 
+
+
+
+        EconomyManager.Instance.foodPerSec += Generation.food;
         EconomyManager.Instance.goldPerSec += Generation.gold;
         EconomyManager.Instance.ironPerSec += Generation.iron;
         EconomyManager.Instance.stonePerSec += Generation.stone;
@@ -125,9 +145,17 @@ public class Building : MonoBehaviour
         EconomyManager.Instance.NotifyResourcesChanged();
         
     }
-        public void OnDestroyed()
+    public void OnDestroyed()
     {
         EconomyManager.Instance.housing -= HousingProvided;
+        EconomyManager.Instance.woodWorkers -= WoodWorkersProvided;
+        EconomyManager.Instance.stoneWorkers -= StoneWorkersProvided;
+        EconomyManager.Instance.foodWorkers -= FoodWorkersProvided;
+        EconomyManager.Instance.ironWorkers -= IronWorkersProvided;
+        EconomyManager.Instance.goldWorkers -= GoldWorkersProvided;
+        EconomyManager.Instance.fuelWorkers -= FuelWorkersProvided;
+
+        EconomyManager.Instance.foodPerSec -= Generation.food;
         EconomyManager.Instance.goldPerSec -= Generation.gold;
         EconomyManager.Instance.ironPerSec -= Generation.iron;
         EconomyManager.Instance.stonePerSec -= Generation.stone;
@@ -150,4 +178,14 @@ public class Building : MonoBehaviour
            }
        }
    }
+
+    public ResourceDropOff GetDropOff(ResourceType type)
+    {
+        foreach (var dropOff in dropOffs)
+        {
+            if (dropOff != null && dropOff.Accepts(type))
+                return dropOff;
+        }
+        return null;
+    }
 }
