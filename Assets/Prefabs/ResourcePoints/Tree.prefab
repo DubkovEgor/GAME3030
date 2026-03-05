@@ -160,8 +160,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   renderers: []
-  Size: {x: 6, y: 6}
-  CellSize: 1
+  Size: {x: 3, y: 3}
+  CellSize: 2
   CurrentSize: {x: 0, y: 0}
   Generation:
     gold: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
     wood: 50
     food: 0
     fuel: 0
-  dropOff: {fileID: 0}
+  dropOffs: []
 --- !u!65 &504783515876300087
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceType: 1
-  totalAmount: 500
+  totalAmount: 400
   amountPerGather: 25
   remaining: 0
   accessPoints:

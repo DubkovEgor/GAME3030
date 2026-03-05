@@ -22,7 +22,7 @@ public class BuildingsGrid : MonoBehaviour
 
     private int gridWidth => GridSize.x;
     private int gridHeight => GridSize.y;
-    private float cellSize => 1f;
+    private float cellSize => 2f;
 
    //  private Vector2Int? pathStartCell = null;
     private Building pathPrefab;

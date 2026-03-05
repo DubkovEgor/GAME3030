@@ -47,22 +47,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070ad6df535d0d84b938f9b404d12a9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1527664606902758647}
-  buildingPlacedClip: {fileID: 8300000, guid: e26c4189cddab1a45b9f9c116da15167, type: 3}
   renderers: []
-  Size: {x: 2, y: 2}
-  CellSize: 1
+  Size: {x: 1, y: 1}
+  CellSize: 2
   CurrentSize: {x: 0, y: 0}
   Generation:
     gold: 0
+    iron: 0
     stone: 0
     wood: 0
+    food: 0
+    fuel: 0
   HousingProvided: 0
+  WoodWorkersProvided: 0
+  StoneWorkersProvided: 0
+  FoodWorkersProvided: 0
+  IronWorkersProvided: 0
+  GoldWorkersProvided: 0
+  FuelWorkersProvided: 0
   highlightMaterial: {fileID: -91986665691257589, guid: 37002017958bc0c4d9a39e85dddcfba7, type: 3}
   Cost:
     gold: 5
+    iron: 0
     stone: 25
     wood: 5
+    food: 0
+    fuel: 0
+  dropOffs: []
 --- !u!65 &3494344370608269417
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -207,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 2501030520453052223}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.01, y: 0.0001, z: 0.01}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []

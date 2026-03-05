@@ -47,22 +47,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070ad6df535d0d84b938f9b404d12a9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: -6121494292144612640}
-  buildingPlacedClip: {fileID: 8300000, guid: e26c4189cddab1a45b9f9c116da15167, type: 3}
   renderers: []
   Size: {x: 1, y: 3}
-  CellSize: 1
+  CellSize: 2
   CurrentSize: {x: 0, y: 0}
   Generation:
     gold: 0
+    iron: 0
     stone: 0
     wood: 0
+    food: 0
+    fuel: 0
   HousingProvided: 0
+  WoodWorkersProvided: 0
+  StoneWorkersProvided: 0
+  FoodWorkersProvided: 0
+  IronWorkersProvided: 0
+  GoldWorkersProvided: 0
+  FuelWorkersProvided: 0
   highlightMaterial: {fileID: -91986665691257589, guid: 37002017958bc0c4d9a39e85dddcfba7, type: 3}
   Cost:
     gold: 10
+    iron: 0
     stone: 0
     wood: 25
+    food: 0
+    fuel: 0
+  dropOffs: []
 --- !u!65 &-5154559924395823313
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -189,6 +200,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 4132217207468901742}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: bb258dadacbc68a4cb3e3ecf9e872210, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bb258dadacbc68a4cb3e3ecf9e872210, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bb258dadacbc68a4cb3e3ecf9e872210, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: bb258dadacbc68a4cb3e3ecf9e872210, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -198,7 +221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb258dadacbc68a4cb3e3ecf9e872210, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.1
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb258dadacbc68a4cb3e3ecf9e872210, type: 3}
       propertyPath: m_LocalRotation.w

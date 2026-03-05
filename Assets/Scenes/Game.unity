@@ -2380,29 +2380,29 @@ MonoBehaviour:
   GridSize: {x: 250, y: 250}
   randomSpawnPrefabs:
   - prefab: {fileID: 6941765000743290380, guid: c60edd51c065ceb46b345849a03bc106, type: 3}
-    countMinSpawn: 15
-    countMaxSpawn: 20
+    countMinSpawn: 35
+    countMaxSpawn: 50
   - prefab: {fileID: 2222111361404534124, guid: 88f2fd29f58b9734683512546acec310, type: 3}
-    countMinSpawn: 15
-    countMaxSpawn: 20
+    countMinSpawn: 35
+    countMaxSpawn: 50
   - prefab: {fileID: 4661435515762455780, guid: e289bf5debb17f6459818c207d781953, type: 3}
-    countMinSpawn: 10
-    countMaxSpawn: 15
+    countMinSpawn: 20
+    countMaxSpawn: 40
   - prefab: {fileID: 850166843530534707, guid: 2355a0ecc0369324097af9b8294b5efc, type: 3}
-    countMinSpawn: 2
+    countMinSpawn: 5
     countMaxSpawn: 5
   - prefab: {fileID: 3276772046046508810, guid: a778b631c6253a04899cb31bad047c81, type: 3}
-    countMinSpawn: 10
-    countMaxSpawn: 20
+    countMinSpawn: 30
+    countMaxSpawn: 40
   - prefab: {fileID: 4537821286664058484, guid: c6308cb7062fac34e8e50600086b12a1, type: 3}
-    countMinSpawn: 15
-    countMaxSpawn: 25
+    countMinSpawn: 30
+    countMaxSpawn: 40
   - prefab: {fileID: 2875824011003690647, guid: f02116c209ecd9e488fc4d2cd8996133, type: 3}
-    countMinSpawn: 15
-    countMaxSpawn: 20
+    countMinSpawn: 30
+    countMaxSpawn: 40
   - prefab: {fileID: 2075660622868541543, guid: 03d17ed267851b44c82afdf0357c15bd, type: 3}
     countMinSpawn: 1
-    countMaxSpawn: 2
+    countMaxSpawn: 3
   messageText: {fileID: 1492811499}
   spawnedObjectsParent: {fileID: 928193881}
 --- !u!4 &90501350
@@ -15120,12 +15120,12 @@ MonoBehaviour:
   currentIronWorkers: 0
   currentGoldWorkers: 0
   currentFuelWorkers: 0
-  goldPerSec: 0
-  ironPerSec: 0
-  stonePerSec: 0
-  woodPerSec: 0
-  foodPerSec: 0
-  fuelPerSec: 0
+  goldPerHour: 0
+  ironPerHour: 0
+  stonePerHour: 0
+  woodPerHour: 0
+  foodPerHour: 0
+  fuelPerHour: 0
   winPanel: {fileID: 1724191443}
   gameUI: {fileID: 726669454}
 --- !u!4 &606141391
@@ -34912,8 +34912,8 @@ Transform:
   m_GameObject: {fileID: 1432649281}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: -0.5}
-  m_LocalScale: {x: 25, y: 1, z: 25}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 50, y: 1, z: 50}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 681267548}
