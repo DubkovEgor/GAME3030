@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2022908492449303361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8934482752596672272}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8934482752596672272
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022908492449303361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3632639497609842996}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3052650838063483533
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,6 +149,7 @@ GameObject:
   - component: {fileID: 179999437259025322}
   - component: {fileID: 5783013038811731063}
   - component: {fileID: -3061504534027277447}
+  - component: {fileID: 2915553285162840678}
   m_Layer: 0
   m_Name: Big Rock
   m_TagString: Decoration
@@ -139,6 +171,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 247735893725646020}
+  - {fileID: 8934482752596672272}
+  - {fileID: 5940308293362077686}
+  - {fileID: 8524657853912240730}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &179999437259025322
@@ -153,22 +188,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 070ad6df535d0d84b938f9b404d12a9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: -3061504534027277447}
-  buildingPlacedClip: {fileID: 8300000, guid: e26c4189cddab1a45b9f9c116da15167, type: 3}
   renderers: []
   Size: {x: 9, y: 9}
   CellSize: 1
   CurrentSize: {x: 0, y: 0}
   Generation:
     gold: 0
+    iron: 0
     stone: 0
     wood: 0
+    food: 0
+    fuel: 0
   HousingProvided: 0
+  WoodWorkersProvided: 0
+  StoneWorkersProvided: 0
+  FoodWorkersProvided: 0
+  IronWorkersProvided: 0
+  GoldWorkersProvided: 0
+  FuelWorkersProvided: 0
   highlightMaterial: {fileID: -91986665691257589, guid: 37002017958bc0c4d9a39e85dddcfba7, type: 3}
   Cost:
     gold: 25
+    iron: 0
     stone: 50
     wood: 0
+    food: 0
+    fuel: 0
+  dropOffs: []
 --- !u!65 &5783013038811731063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -188,8 +234,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.609539, y: 1.9900001, z: 2.02}
-  m_Center: {x: 1.4419899, y: 0.39000005, z: 1.61}
+  m_Size: {x: 2.0328748, y: 1.9900001, z: 1.5889235}
+  m_Center: {x: 1.4758039, y: 0.39000005, z: 1.5892291}
 --- !u!82 &-3061504534027277447
 AudioSource:
   m_ObjectHideFlags: 0
@@ -286,3 +332,87 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2915553285162840678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3276772046046508810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 475826bdfaac30d43bfcdbe7df34509d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceType: 2
+  totalAmount: 750
+  amountPerGather: 25
+  remaining: 0
+  accessPoints:
+  - {fileID: 8934482752596672272}
+  - {fileID: 5940308293362077686}
+  - {fileID: 8524657853912240730}
+  depletedVisual: {fileID: 0}
+  activeVisual: {fileID: 0}
+--- !u!1 &4349966798275395229
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8524657853912240730}
+  m_Layer: 0
+  m_Name: GameObject (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8524657853912240730
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4349966798275395229}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 2.818}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3632639497609842996}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8640384137163435796
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5940308293362077686}
+  m_Layer: 0
+  m_Name: GameObject (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5940308293362077686
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8640384137163435796}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.85, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3632639497609842996}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

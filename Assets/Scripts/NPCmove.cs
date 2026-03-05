@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Net.NetworkInformation;
 public enum NPCState
 {
     Idle,
@@ -52,7 +51,7 @@ public class NPCMove : MonoBehaviour
 
     private Rigidbody rb;
     private Animator _animator;
-    private static readonly int AnimState = Animator.StringToHash("State");
+    private static readonly int AnimStateHash = Animator.StringToHash("State");
 
     private Vector3 moveDirection;
     private bool isMoving = false;
@@ -139,11 +138,18 @@ public class NPCMove : MonoBehaviour
     private void EnterState(NPCState next)
     {
         if (_stateCoroutine != null) StopCoroutine(_stateCoroutine);
-        HideAllCarryProps();
-
+        if (next != NPCState.CarryingResources)
+            HideAllCarryProps();
         _state = next;
         _debugState = next;
-        UpdateAnimator();
+
+        bool gatherState = next == NPCState.GatheringWood || next == NPCState.GatheringStone ||
+                        next == NPCState.GatheringGold || next == NPCState.GatheringIron ||
+                        next == NPCState.GatheringFuel || next == NPCState.GatheringBerries ||
+                        next == NPCState.GatheringCrops || next == NPCState.GatheringMeat;
+
+        if (!gatherState)
+            UpdateAnimator();
 
         switch (next)
         {
@@ -177,6 +183,9 @@ public class NPCMove : MonoBehaviour
         {
             moveDirection = RandomDirectionXZ();
             isMoving = true;
+            _state = NPCState.Walking;
+            _debugState = NPCState.Walking;
+            UpdateAnimator();
 
             float moveTime = Random.Range(minMoveTime, maxMoveTime);
             float t = 0f;
@@ -188,6 +197,9 @@ public class NPCMove : MonoBehaviour
             }
 
             isMoving = false;
+            _state = NPCState.Idle;
+            _debugState = NPCState.Idle;
+            UpdateAnimator();
 
             float idle = Random.Range(minIdleTime, maxIdleTime);
             float u = 0f;
@@ -276,10 +288,18 @@ public class NPCMove : MonoBehaviour
     }
     private IEnumerator GatherRoutine()
     {
+        _state = NPCState.Walking;
+        _debugState = NPCState.Walking;
+        UpdateAnimator();
+
         _targetPoint = GatheringPointManager.Instance.FindNearest(assignedResource, transform.position);
 
         if (_targetPoint == null)
         {
+
+            _state = NPCState.Idle;
+            _debugState = NPCState.Idle;
+            UpdateAnimator();
             yield return new WaitForSeconds(3f);
             if (isAssigned) EnterState(GatherStateForType(assignedResource));
             yield break;
@@ -288,12 +308,19 @@ public class NPCMove : MonoBehaviour
         _targetAccessPoint = _targetPoint.ReserveAccessPoint();
         if (_targetAccessPoint == null)
         {
+            _state = NPCState.Idle;
+            _debugState = NPCState.Idle;
+            UpdateAnimator();
             yield return new WaitForSeconds(2f);
             if (isAssigned) EnterState(GatherStateForType(assignedResource));
             yield break;
         }
 
         yield return StartCoroutine(WalkTo(_targetAccessPoint.position));
+
+        _state = GatherStateForType(assignedResource);
+        _debugState = _state;
+        UpdateAnimator();
         yield return new WaitForSeconds(gatherDuration);
 
         _carryAmount = _targetPoint.TryGather();
@@ -321,6 +348,7 @@ public class NPCMove : MonoBehaviour
 
         _targetDropOff.Deposit(assignedResource, _carryAmount);
         _carryAmount = 0;
+        HideAllCarryProps();
 
         if (isAssigned)
             EnterState(GatherStateForType(assignedResource));
@@ -383,7 +411,24 @@ public class NPCMove : MonoBehaviour
     private void UpdateAnimator()
     {
         if (_animator == null) return;
-        _animator.SetInteger(AnimState, (int)_state);
+
+        int animValue = _state switch
+        {
+            NPCState.Idle => 0,
+            NPCState.Walking => 1,
+            NPCState.CarryingResources => 2,
+            NPCState.GatheringWood => 3, 
+            NPCState.GatheringStone => 4,
+            NPCState.GatheringIron => 5, 
+            NPCState.GatheringGold => 6, 
+            NPCState.GatheringFuel => 7, 
+            NPCState.GatheringBerries => 8,
+            NPCState.GatheringCrops => 9,
+            NPCState.GatheringMeat => 10,
+            _ => 0
+        };
+
+        _animator.SetInteger(AnimStateHash, animValue);
     }
 
     private void HideAllCarryProps()
