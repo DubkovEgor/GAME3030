@@ -24,9 +24,8 @@ public class BuildingsGrid : MonoBehaviour
     private int gridHeight => GridSize.y;
     private float cellSize => 2f;
 
-   //  private Vector2Int? pathStartCell = null;
-    private Building pathPrefab;
-    private List<Vector2Int> previewCells = new List<Vector2Int>();
+    private Vector2Int? pathStartCell = null;
+    private List<Building> pathGhosts = new List<Building>();
 
     private void Awake()
     {
@@ -61,6 +60,9 @@ public class BuildingsGrid : MonoBehaviour
         if (flyingBuilding != null)
             Destroy(flyingBuilding.gameObject);
 
+        ClearPathGhosts();
+        pathStartCell = null;
+
         Vector3 spawnPos = GetMouseWorldPosition();
         flyingBuilding = Instantiate(buildingPrefab, spawnPos, Quaternion.identity);
         lastBuildingPrefab = buildingPrefab;
@@ -71,17 +73,10 @@ public class BuildingsGrid : MonoBehaviour
 
     private void Update()
     {
-        HandleBuilding();
-        
-        //if (flyingBuilding != null && flyingBuilding.CompareTag("Path"))
-        //{
-        //    pathPrefab = flyingBuilding; // set current path prefab
-        //    HandlePathPlacement();
-        //}
-        //else
-        //{
-        //    HandleBuilding();
-        //}
+        if (flyingBuilding != null && flyingBuilding.CompareTag("Path"))
+            HandlePathPlacement();
+        else
+            HandleBuilding();
     }
 
 
@@ -204,7 +199,180 @@ public class BuildingsGrid : MonoBehaviour
         StartPlacingBuilding(lastBuildingPrefab);
     }
 
+    private void HandlePathPlacement()
+    {
+        if (flyingBuilding == null) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
 
+        if (Input.GetMouseButtonDown(1))
+        {
+            CancelPathPlacement();
+            return;
+        }
+
+        var groundPlane = new Plane(Vector3.up, Vector3.zero);
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        if (!groundPlane.Raycast(ray, out float distance)) return;
+
+        Vector3 worldPos = ray.GetPoint(distance);
+        int mouseX = Mathf.FloorToInt((worldPos.x - gridOrigin.x) / cellSize);
+        int mouseY = Mathf.FloorToInt((worldPos.z - gridOrigin.z) / cellSize);
+        mouseX = Mathf.Clamp(mouseX, 0, GridSize.x - 1);
+        mouseY = Mathf.Clamp(mouseY, 0, GridSize.y - 1);
+        Vector2Int mouseCell = new Vector2Int(mouseX, mouseY);
+
+        if (pathStartCell == null)
+        {
+            flyingBuilding.transform.position = GetCellCenter(mouseX, mouseY);
+            bool cellFree = grid[mouseX, mouseY] == null;
+            flyingBuilding.SetTransparent(cellFree);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                pathStartCell = mouseCell;
+                flyingBuilding.gameObject.SetActive(false);
+            }
+        }
+
+
+        else
+        {
+            List<Vector2Int> cells = GetAxisAlignedCells(pathStartCell.Value, mouseCell);
+            UpdatePathGhosts(cells);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                PlacePathTiles(cells);
+
+                pathStartCell = null;
+                ClearPathGhosts();
+
+                flyingBuilding.gameObject.SetActive(true);
+                flyingBuilding.SetNormal();
+
+                Building prefab = lastBuildingPrefab;
+                Destroy(flyingBuilding.gameObject);
+                flyingBuilding = null;
+                StartPlacingBuilding(prefab);
+            }
+        }
+    }
+
+    private List<Vector2Int> GetAxisAlignedCells(Vector2Int a, Vector2Int b)
+    {
+        List<Vector2Int> cells = new List<Vector2Int>();
+
+        int dx = b.x - a.x;
+        int dy = b.y - a.y;
+
+        if (Mathf.Abs(dx) >= Mathf.Abs(dy))
+        {
+            int step = dx >= 0 ? 1 : -1;
+            for (int x = a.x; x != b.x + step; x += step)
+                cells.Add(new Vector2Int(x, a.y));
+        }
+        else
+        {
+            int step = dy >= 0 ? 1 : -1;
+            for (int y = a.y; y != b.y + step; y += step)
+                cells.Add(new Vector2Int(a.x, y));
+        }
+
+        return cells;
+    }
+
+    private void UpdatePathGhosts(List<Vector2Int> cells)
+    {
+        if (pathGhosts.Count != cells.Count)
+        {
+            ClearPathGhosts();
+            for (int i = 0; i < cells.Count; i++)
+            {
+                Building ghost = Instantiate(lastBuildingPrefab, Vector3.zero, Quaternion.identity);
+                pathGhosts.Add(ghost);
+            }
+        }
+
+        int totalAffordable = EconomyManager.Instance != null
+            ? Mathf.FloorToInt(GetAffordableTileCount(lastBuildingPrefab.Cost))
+            : cells.Count;
+
+        for (int i = 0; i < pathGhosts.Count; i++)
+        {
+            Vector2Int cell = cells[i];
+            pathGhosts[i].transform.position = GetCellCenter(cell.x, cell.y);
+
+            bool inBounds = cell.x >= 0 && cell.x < GridSize.x && cell.y >= 0 && cell.y < GridSize.y;
+            bool free = inBounds && grid[cell.x, cell.y] == null;
+            bool affordable = i < totalAffordable;
+
+            pathGhosts[i].SetTransparent(free && affordable);
+        }
+    }
+
+    private void PlacePathTiles(List<Vector2Int> cells)
+    {
+        foreach (var cell in cells)
+        {
+            if (cell.x < 0 || cell.x >= GridSize.x || cell.y < 0 || cell.y >= GridSize.y)
+                continue;
+
+            if (grid[cell.x, cell.y] != null)
+                continue;
+
+            if (!EconomyManager.Instance.CanAfford(lastBuildingPrefab.Cost))
+                break;
+
+            if (!EconomyManager.Instance.SpendResources(lastBuildingPrefab.Cost))
+                break;
+
+            Building tile = Instantiate(lastBuildingPrefab, GetCellCenter(cell.x, cell.y), Quaternion.identity);
+
+            if (spawnedObjectsParent != null)
+                tile.transform.parent = spawnedObjectsParent;
+
+            grid[cell.x, cell.y] = tile;
+            tile.OnPlaced();
+            tile.SetNormal();
+        }
+
+        SoundManager.Instance.PlaySFX("Place");
+    }
+
+
+    private int GetAffordableTileCount(ResourceCost cost)
+    {
+        int max = int.MaxValue;
+
+        if (cost.gold > 0) max = Mathf.Min(max, EconomyManager.Instance.gold / cost.gold);
+        if (cost.wood > 0) max = Mathf.Min(max, EconomyManager.Instance.wood / cost.wood);
+        if (cost.stone > 0) max = Mathf.Min(max, EconomyManager.Instance.stone / cost.stone);
+        if (cost.food > 0) max = Mathf.Min(max, EconomyManager.Instance.food / cost.food);
+        if (cost.iron > 0) max = Mathf.Min(max, EconomyManager.Instance.iron / cost.iron);
+        if (cost.fuel > 0) max = Mathf.Min(max, EconomyManager.Instance.fuel / cost.fuel);
+
+        return max == int.MaxValue ? int.MaxValue : max;
+    }
+
+    private void CancelPathPlacement()
+    {
+        pathStartCell = null;
+        ClearPathGhosts();
+
+        if (flyingBuilding != null)
+        {
+            Destroy(flyingBuilding.gameObject);
+            flyingBuilding = null;
+        }
+    }
+
+    private void ClearPathGhosts()
+    {
+        foreach (var ghost in pathGhosts)
+            if (ghost != null) Destroy(ghost.gameObject);
+
+        pathGhosts.Clear();
+    }
 
     public void ClearScene()
     {
@@ -231,17 +399,25 @@ public class BuildingsGrid : MonoBehaviour
         grid = new Building[GridSize.x, GridSize.y];
 
         flyingBuilding = null;
+        pathStartCell = null;
+        ClearPathGhosts();
         if (EconomyManager.Instance != null)
         {
             EconomyManager.Instance.gold = 1000;
             EconomyManager.Instance.stone = 500;
             EconomyManager.Instance.wood = 500;
+            EconomyManager.Instance.food = 500;
+            EconomyManager.Instance.fuel = 500;
+            EconomyManager.Instance.iron = 500;
             EconomyManager.Instance.housing = 0;
             EconomyManager.Instance.currentNPCs = 0;
 
             EconomyManager.Instance.goldPerHour = 0;
             EconomyManager.Instance.woodPerHour = 0;
             EconomyManager.Instance.stonePerHour = 0;
+            EconomyManager.Instance.foodPerHour = 0;
+            EconomyManager.Instance.fuelPerHour = 0;
+            EconomyManager.Instance.ironPerHour = 0;
 
             EconomyManager.Instance.NotifyResourcesChanged();
         }
@@ -346,111 +522,6 @@ public class BuildingsGrid : MonoBehaviour
             }
         }
     }
-
-
-
-    //private void HandlePathPlacement()
-    //{
-    //    if (pathPrefab == null) return;
-
-    //    if (EventSystem.current.IsPointerOverGameObject()) return;
-
-    //    var groundPlane = new Plane(Vector3.up, Vector3.zero);
-    //    Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-    //    if (!groundPlane.Raycast(ray, out float distance)) return;
-
-    //    Vector3 worldPos = ray.GetPoint(distance);
-    //    int x = Mathf.RoundToInt((worldPos.x - gridOrigin.x) / cellSize);
-    //    int y = Mathf.RoundToInt((worldPos.z - gridOrigin.z) / cellSize);
-    //    Vector2Int currentCell = new Vector2Int(x, y);
-
-    //    // First click: set start point
-    //    if (Input.GetMouseButtonDown(0) && pathStartCell == null)
-    //    {
-    //        pathStartCell = currentCell;
-    //        previewCells.Clear();
-    //    }
-    //    // Second click: place all tiles along line
-    //    else if (Input.GetMouseButtonDown(0) && pathStartCell != null)
-    //    {
-    //        Vector2Int start = pathStartCell.Value;
-    //        Vector2Int end = currentCell;
-
-    //        List<Vector2Int> cellsToPlace = GetCellsLine(start, end);
-
-    //        foreach (var cell in cellsToPlace)
-    //        {
-    //            if (AreaIsFree(cell.x, cell.y, pathPrefab.Size))
-    //            {
-    //                PlacePathTile(cell.x, cell.y);
-    //            }
-    //        }
-
-    //        pathStartCell = null;
-    //        previewCells.Clear();
-    //    }
-    //    else if (pathStartCell != null)
-    //    {
-    //        // Update preview cells along line from start to current mouse
-    //        previewCells = GetCellsLine(pathStartCell.Value, currentCell);
-    //    }
-    //}
-
-    //private void OnDrawGizmosSelected()
-    //{
-    //    if (previewCells == null) return;
-
-    //    Gizmos.color = new Color(0, 1, 1, 0.5f);
-    //    foreach (var cell in previewCells)
-    //    {
-    //        Vector3 pos = gridOrigin + new Vector3(cell.x * cellSize + cellSize * 0.5f, 0.05f, cell.y * cellSize + cellSize * 0.5f);
-    //        Gizmos.DrawCube(pos, new Vector3(cellSize, 0.1f, cellSize));
-    //    }
-    //}
-
-    //private List<Vector2Int> GetCellsLine(Vector2Int start, Vector2Int end)
-    //{
-    //    List<Vector2Int> cells = new List<Vector2Int>();
-
-    //    int dx = Mathf.Abs(end.x - start.x);
-    //    int dy = Mathf.Abs(end.y - start.y);
-
-    //    int sx = start.x < end.x ? 1 : -1;
-    //    int sy = start.y < end.y ? 1 : -1;
-
-    //    int err = dx - dy;
-    //    int x = start.x;
-    //    int y = start.y;
-
-    //    while (true)
-    //    {
-    //        cells.Add(new Vector2Int(x, y));
-    //        if (x == end.x && y == end.y) break;
-    //        int e2 = 2 * err;
-    //        if (e2 > -dy) { err -= dy; x += sx; }
-    //        if (e2 < dx) { err += dx; y += sy; }
-    //    }
-
-    //    return cells;
-    //}
-
-    //private void PlacePathTile(int x, int y)
-    //{
-    //    GameObject obj = Instantiate(pathPrefab.gameObject,
-    //        gridOrigin + new Vector3(x * cellSize + cellSize * 0.5f, 0, y * cellSize + cellSize * 0.5f),
-    //        Quaternion.identity);
-
-    //    if (spawnedObjectsParent != null)
-    //        obj.transform.parent = spawnedObjectsParent;
-
-    //    Building b = obj.GetComponent<Building>();
-    //    for (int dx = 0; dx < b.CurrentSize.x; dx++)
-    //        for (int dy = 0; dy < b.CurrentSize.y; dy++)
-    //            grid[x + dx, y + dy] = b;
-
-    //    b.OnPlaced();
-    //}
-
     private Vector3 GetCellCenter(int x, int y)
     {
         return gridOrigin + new Vector3(
