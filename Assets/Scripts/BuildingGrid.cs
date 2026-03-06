@@ -24,7 +24,7 @@ public class BuildingsGrid : MonoBehaviour
     private int gridHeight => GridSize.y;
     private float cellSize => 2f;
 
-    private Vector2Int? pathStartCell = null;
+    private List<Vector2Int> pathWaypoints = new List<Vector2Int>();
     private List<Building> pathGhosts = new List<Building>();
 
     private void Awake()
@@ -61,7 +61,7 @@ public class BuildingsGrid : MonoBehaviour
             Destroy(flyingBuilding.gameObject);
 
         ClearPathGhosts();
-        pathStartCell = null;
+        pathWaypoints.Clear();
 
         Vector3 spawnPos = GetMouseWorldPosition();
         flyingBuilding = Instantiate(buildingPrefab, spawnPos, Quaternion.identity);
@@ -215,49 +215,82 @@ public class BuildingsGrid : MonoBehaviour
         if (!groundPlane.Raycast(ray, out float distance)) return;
 
         Vector3 worldPos = ray.GetPoint(distance);
-        int mouseX = Mathf.FloorToInt((worldPos.x - gridOrigin.x) / cellSize);
-        int mouseY = Mathf.FloorToInt((worldPos.z - gridOrigin.z) / cellSize);
-        mouseX = Mathf.Clamp(mouseX, 0, GridSize.x - 1);
-        mouseY = Mathf.Clamp(mouseY, 0, GridSize.y - 1);
+        int mouseX = Mathf.Clamp(Mathf.FloorToInt((worldPos.x - gridOrigin.x) / cellSize), 0, GridSize.x - 1);
+        int mouseY = Mathf.Clamp(Mathf.FloorToInt((worldPos.z - gridOrigin.z) / cellSize), 0, GridSize.y - 1);
         Vector2Int mouseCell = new Vector2Int(mouseX, mouseY);
 
-        if (pathStartCell == null)
+        if (pathWaypoints.Count == 0)
         {
             flyingBuilding.transform.position = GetCellCenter(mouseX, mouseY);
-            bool cellFree = grid[mouseX, mouseY] == null;
-            flyingBuilding.SetTransparent(cellFree);
+            flyingBuilding.SetTransparent(grid[mouseX, mouseY] == null);
 
             if (Input.GetMouseButtonDown(0))
             {
-                pathStartCell = mouseCell;
-                flyingBuilding.gameObject.SetActive(false);
+                pathWaypoints.Add(mouseCell);               
+                flyingBuilding.gameObject.SetActive(false); 
             }
+
+            return;
         }
 
+        List<Vector2Int> allCells = GetAllSegmentCells(pathWaypoints, mouseCell);
+        UpdatePathGhosts(allCells);
 
-        else
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            List<Vector2Int> cells = GetAxisAlignedCells(pathStartCell.Value, mouseCell);
-            UpdatePathGhosts(cells);
+            if (mouseCell != pathWaypoints[pathWaypoints.Count - 1])
+                pathWaypoints.Add(mouseCell);
+            return;
+        }
 
-            if (Input.GetMouseButtonDown(0))
-            {
-                PlacePathTiles(cells);
+        if (Input.GetMouseButtonDown(0))
+        {
+            PlacePathTiles(allCells);
 
-                pathStartCell = null;
-                ClearPathGhosts();
+            pathWaypoints.Clear();
+            ClearPathGhosts();
 
-                flyingBuilding.gameObject.SetActive(true);
-                flyingBuilding.SetNormal();
-
-                Building prefab = lastBuildingPrefab;
-                Destroy(flyingBuilding.gameObject);
-                flyingBuilding = null;
-                StartPlacingBuilding(prefab);
-            }
+            Building prefab = lastBuildingPrefab;
+            Destroy(flyingBuilding.gameObject);
+            flyingBuilding = null;
+            StartPlacingBuilding(prefab);
         }
     }
+    private List<Vector2Int> GetAllSegmentCells(List<Vector2Int> waypoints, Vector2Int liveEnd)
+    {
+        var result = new List<Vector2Int>();
+        var visited = new HashSet<Vector2Int>();
 
+        for (int i = 0; i < waypoints.Count - 1; i++)
+            AddSegment(waypoints[i], waypoints[i + 1], result, visited);
+
+        AddSegment(waypoints[waypoints.Count - 1], liveEnd, result, visited);
+
+        return result;
+    }
+    private void TryAdd(Vector2Int cell, List<Vector2Int> result, HashSet<Vector2Int> visited)
+    {
+        if (visited.Add(cell))
+            result.Add(cell);
+    }
+    private void AddSegment(Vector2Int a, Vector2Int b, List<Vector2Int> result, HashSet<Vector2Int> visited)
+    {
+        int dx = b.x - a.x;
+        int dy = b.y - a.y;
+
+        if (Mathf.Abs(dx) >= Mathf.Abs(dy))
+        {
+            int step = dx >= 0 ? 1 : -1;
+            for (int x = a.x; x != b.x + step; x += step)
+                TryAdd(new Vector2Int(x, a.y), result, visited);
+        }
+        else
+        {
+            int step = dy >= 0 ? 1 : -1;
+            for (int y = a.y; y != b.y + step; y += step)
+                TryAdd(new Vector2Int(a.x, y), result, visited);
+        }
+    }
     private List<Vector2Int> GetAxisAlignedCells(Vector2Int a, Vector2Int b)
     {
         List<Vector2Int> cells = new List<Vector2Int>();
@@ -287,26 +320,20 @@ public class BuildingsGrid : MonoBehaviour
         {
             ClearPathGhosts();
             for (int i = 0; i < cells.Count; i++)
-            {
-                Building ghost = Instantiate(lastBuildingPrefab, Vector3.zero, Quaternion.identity);
-                pathGhosts.Add(ghost);
-            }
+                pathGhosts.Add(Instantiate(lastBuildingPrefab, Vector3.zero, Quaternion.identity));
         }
 
-        int totalAffordable = EconomyManager.Instance != null
-            ? Mathf.FloorToInt(GetAffordableTileCount(lastBuildingPrefab.Cost))
-            : cells.Count;
+        int affordable = GetAffordableTileCount(lastBuildingPrefab.Cost);
 
         for (int i = 0; i < pathGhosts.Count; i++)
         {
             Vector2Int cell = cells[i];
-            pathGhosts[i].transform.position = GetCellCenter(cell.x, cell.y);
-
             bool inBounds = cell.x >= 0 && cell.x < GridSize.x && cell.y >= 0 && cell.y < GridSize.y;
             bool free = inBounds && grid[cell.x, cell.y] == null;
-            bool affordable = i < totalAffordable;
+            bool canAfford = i < affordable;
 
-            pathGhosts[i].SetTransparent(free && affordable);
+            pathGhosts[i].transform.position = GetCellCenter(cell.x, cell.y);
+            pathGhosts[i].SetTransparent(free && canAfford);
         }
     }
 
@@ -314,23 +341,13 @@ public class BuildingsGrid : MonoBehaviour
     {
         foreach (var cell in cells)
         {
-            if (cell.x < 0 || cell.x >= GridSize.x || cell.y < 0 || cell.y >= GridSize.y)
-                continue;
-
-            if (grid[cell.x, cell.y] != null)
-                continue;
-
-            if (!EconomyManager.Instance.CanAfford(lastBuildingPrefab.Cost))
-                break;
-
-            if (!EconomyManager.Instance.SpendResources(lastBuildingPrefab.Cost))
-                break;
+            if (cell.x < 0 || cell.x >= GridSize.x || cell.y < 0 || cell.y >= GridSize.y) continue;
+            if (grid[cell.x, cell.y] != null) continue;
+            if (!EconomyManager.Instance.CanAfford(lastBuildingPrefab.Cost)) break;
+            if (!EconomyManager.Instance.SpendResources(lastBuildingPrefab.Cost)) break;
 
             Building tile = Instantiate(lastBuildingPrefab, GetCellCenter(cell.x, cell.y), Quaternion.identity);
-
-            if (spawnedObjectsParent != null)
-                tile.transform.parent = spawnedObjectsParent;
-
+            if (spawnedObjectsParent != null) tile.transform.parent = spawnedObjectsParent;
             grid[cell.x, cell.y] = tile;
             tile.OnPlaced();
             tile.SetNormal();
@@ -356,7 +373,7 @@ public class BuildingsGrid : MonoBehaviour
 
     private void CancelPathPlacement()
     {
-        pathStartCell = null;
+        pathWaypoints.Clear();
         ClearPathGhosts();
 
         if (flyingBuilding != null)
@@ -365,6 +382,7 @@ public class BuildingsGrid : MonoBehaviour
             flyingBuilding = null;
         }
     }
+
 
     private void ClearPathGhosts()
     {
@@ -399,7 +417,7 @@ public class BuildingsGrid : MonoBehaviour
         grid = new Building[GridSize.x, GridSize.y];
 
         flyingBuilding = null;
-        pathStartCell = null;
+        pathWaypoints.Clear();
         ClearPathGhosts();
         if (EconomyManager.Instance != null)
         {
