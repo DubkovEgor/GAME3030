@@ -110,7 +110,7 @@ public class WorkerAllocationUI : MonoBehaviour
             int current = NPCRegistry.Instance.GetWorkers(row.resourceType).Count;
 
             if (row.labelText) row.labelText.text = row.label;
-            if (row.countText) row.countText.text = $"{current} / {max}";
+            if (row.countText) row.countText.text = $"/ {max}";
 
             row.slider.minValue = 0;
             row.slider.maxValue = max;

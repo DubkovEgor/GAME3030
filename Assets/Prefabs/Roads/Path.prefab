@@ -67,9 +67,9 @@ MonoBehaviour:
   FuelWorkersProvided: 0
   highlightMaterial: {fileID: -91986665691257589, guid: 37002017958bc0c4d9a39e85dddcfba7, type: 3}
   Cost:
-    gold: 5
+    gold: 1
     iron: 0
-    stone: 25
+    stone: 5
     wood: 5
     food: 0
     fuel: 0
