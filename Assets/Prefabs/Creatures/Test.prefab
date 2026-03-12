@@ -322,6 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6010a528f44524baf9e48ed0a28122, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseMoveSpeed: 2
   moveSpeed: 2
   turnSpeed: 8
   minMoveTime: 1
@@ -330,7 +331,7 @@ MonoBehaviour:
   maxIdleTime: 2
   useRigidbody: 0
   gatherDuration: 5
-  arrivalRadius: 2
+  arrivalRadius: 1
   carryWood: {fileID: 4722725518912565289}
   carryStone: {fileID: 3107076311641290103}
   carryGold: {fileID: 0}
@@ -339,10 +340,12 @@ MonoBehaviour:
   carryBerries: {fileID: 0}
   carryCrops: {fileID: 0}
   carryMeat: {fileID: 0}
-  _carryAmount: 0
-  _debugState: 0
-  _debugAssigned: 0
-  _debugResource: 0
+  carryAmount: 0
+  debugState: 0
+  debugAssigned: 0
+  debugResource: 0
+  separationRadius: 1.2
+  separationForce: 4
 --- !u!4 &9195228143962611933 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e163c18400a31f4090c48abbe4eabb2, type: 3}
