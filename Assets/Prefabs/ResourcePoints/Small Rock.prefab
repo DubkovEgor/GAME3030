@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8872195509419098103}
   - component: {fileID: -708940597866570716}
   - component: {fileID: 7393440227938411290}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Small Rock
   m_TagString: Decoration
   m_Icon: {fileID: 0}
@@ -96,8 +96,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.95, y: 0.91, z: 0.94}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.95, y: 1.2195008, z: 0.94}
+  m_Center: {x: 0, y: 0.15475045, z: 0}
 --- !u!82 &-708940597866570716
 AudioSource:
   m_ObjectHideFlags: 0
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 557531156117530289}
   - component: {fileID: 3375917046666722092}
   - component: {fileID: 568176493241860961}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1759745450354404151}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6474977973906653469}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

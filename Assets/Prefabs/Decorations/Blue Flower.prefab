@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3170720549983971263}
   - component: {fileID: 8749800437786762841}
   - component: {fileID: 7796843181994774326}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,8 +94,7 @@ GameObject:
   - component: {fileID: 4924435282238689713}
   - component: {fileID: 5948872867975921217}
   - component: {fileID: 2439850677391784848}
-  - component: {fileID: 424807190489766632}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD0 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,27 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &424807190489766632
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1217375083541657634}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.36221355, z: 0.2}
-  m_Center: {x: 0, y: 0.17206362, z: 0}
 --- !u!1 &1327465623075144849
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,8 +177,7 @@ GameObject:
   - component: {fileID: 1415705767094056795}
   - component: {fileID: 636645173460354990}
   - component: {fileID: 4273790086374757229}
-  - component: {fileID: 39617893263329483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD0 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,27 +249,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &39617893263329483
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1327465623075144849}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.36221355, z: 0.2}
-  m_Center: {x: 0, y: 0.17206362, z: 0}
 --- !u!1 &1610559967539980477
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,8 +260,7 @@ GameObject:
   - component: {fileID: 9140243151908730828}
   - component: {fileID: 7991678327932535544}
   - component: {fileID: 5525278861784853655}
-  - component: {fileID: 7946057695548080877}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -377,27 +332,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7946057695548080877
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1610559967539980477}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.36221355, z: 0.2}
-  m_Center: {x: 0, y: 0.17206362, z: 0}
 --- !u!1 &3474586469933685846
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,8 +343,7 @@ GameObject:
   - component: {fileID: 7546754162368725668}
   - component: {fileID: 4005792919205588408}
   - component: {fileID: 5239770078322571371}
-  - component: {fileID: 2799740716385147855}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,27 +415,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2799740716385147855
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3474586469933685846}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.36221355, z: 0.2}
-  m_Center: {x: 0, y: 0.17206362, z: 0}
 --- !u!1 &3899520030806763256
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +427,8 @@ GameObject:
   - component: {fileID: 4496930816834818447}
   - component: {fileID: -1304126729979698802}
   - component: {fileID: 880893046631291321}
-  m_Layer: 0
+  - component: {fileID: 3794427605081277850}
+  m_Layer: 8
   m_Name: Blue Flower
   m_TagString: Decoration
   m_Icon: {fileID: 0}
@@ -705,6 +618,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &3794427605081277850
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899520030806763256}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!1 &5231114940255927543
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,8 +650,7 @@ GameObject:
   - component: {fileID: 9185484626608190620}
   - component: {fileID: 8062988835990626927}
   - component: {fileID: 4740202428397516367}
-  - component: {fileID: 3485659736707935086}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD0 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,27 +722,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3485659736707935086
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5231114940255927543}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.36221355, z: 0.2}
-  m_Center: {x: 0, y: 0.17206362, z: 0}
 --- !u!1 &5861139560175496540
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +733,7 @@ GameObject:
   - component: {fileID: 3555505184138118225}
   - component: {fileID: 8050162282611261014}
   - component: {fileID: 5447324951466549824}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -904,7 +816,7 @@ GameObject:
   - component: {fileID: 3394245009838633739}
   - component: {fileID: 6168401114048995219}
   - component: {fileID: 5358925382087049941}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -987,7 +899,7 @@ GameObject:
   - component: {fileID: 3810739653458918301}
   - component: {fileID: 416394510640377952}
   - component: {fileID: 5394595494740122576}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1070,7 +982,7 @@ GameObject:
   - component: {fileID: 2477855283117445636}
   - component: {fileID: 8602329730404868096}
   - component: {fileID: 5102048460776030939}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Flowers_02_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

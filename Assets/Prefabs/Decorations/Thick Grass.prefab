@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5690786719881562600}
   - component: {fileID: 3161136069642247217}
   - component: {fileID: 3720084168579074821}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,8 +94,7 @@ GameObject:
   - component: {fileID: 1004636484151938667}
   - component: {fileID: 5153546964534228313}
   - component: {fileID: 6796834306169265213}
-  - component: {fileID: 4584415706394838876}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass_01_LOD0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,27 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4584415706394838876
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2520740542579725373}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.3790605, z: 0.2}
-  m_Center: {x: 0, y: 0.18182376, z: 0}
 --- !u!1 &4205345818668902115
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +177,7 @@ GameObject:
   - component: {fileID: 2582890612775983352}
   - component: {fileID: 372894181375524656}
   - component: {fileID: 2495443657028446140}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass_01_LOD1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,8 +260,7 @@ GameObject:
   - component: {fileID: 7648551434663967059}
   - component: {fileID: 8433892062796395734}
   - component: {fileID: 4537626611710028913}
-  - component: {fileID: 455794860587719322}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass_01_LOD0 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,27 +332,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &455794860587719322
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5325010425889989433}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.3790605, z: 0.2}
-  m_Center: {x: 0, y: 0.18182376, z: 0}
 --- !u!1 &6312969165794846113
 GameObject:
   m_ObjectHideFlags: 0
@@ -387,8 +343,7 @@ GameObject:
   - component: {fileID: 8927922121296990005}
   - component: {fileID: 1443342737404663106}
   - component: {fileID: 6128016933341854088}
-  - component: {fileID: 3166200003208906893}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -460,27 +415,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3166200003208906893
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6312969165794846113}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.3790605, z: 0.2}
-  m_Center: {x: 0, y: 0.18182376, z: 0}
 --- !u!1 &8453327687103771549
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,7 +426,7 @@ GameObject:
   - component: {fileID: 2377139648930590862}
   - component: {fileID: 8332720340694730610}
   - component: {fileID: 405525701222490624}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grass_01_LOD1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +510,8 @@ GameObject:
   - component: {fileID: 6757531004235149912}
   - component: {fileID: 658958716882492077}
   - component: {fileID: -7617363765589363132}
-  m_Layer: 0
+  - component: {fileID: 6131208933034156973}
+  m_Layer: 8
   m_Name: Thick Grass
   m_TagString: Decoration
   m_Icon: {fileID: 0}
@@ -762,3 +697,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &6131208933034156973
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8903058273634794869}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.4, y: 0.75, z: 0.4}
+  m_Center: {x: 0, y: 0.3, z: 0}

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2733373449986276740}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 227271770046869820}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.896, y: 0, z: 2.818}
+  m_LocalPosition: {x: 2.896, y: 0, z: 1.542}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 750698753783373415}
   - component: {fileID: 5287171495964582714}
   - component: {fileID: 5879212460737196518}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_05 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8934482752596672272}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,7 +162,7 @@ Transform:
   m_GameObject: {fileID: 2022908492449303361}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1.429}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 6066741061493578291}
   - component: {fileID: 4105106796251981974}
   - component: {fileID: 9001745178990512736}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 5783013038811731063}
   - component: {fileID: -3061504534027277447}
   - component: {fileID: 2915553285162840678}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Big Rock
   m_TagString: Decoration
   m_Icon: {fileID: 0}
@@ -374,8 +374,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.0328748, y: 1.9900001, z: 1.5889235}
-  m_Center: {x: 1.4758039, y: 0.39000005, z: 1.5892291}
+  m_Size: {x: 3.1904352, y: 2.4520385, z: 3.1969986}
+  m_Center: {x: 1.3805865, y: 0.62101895, z: 1.2427216}
 --- !u!82 &-3061504534027277447
 AudioSource:
   m_ObjectHideFlags: 0
@@ -504,7 +504,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8524657853912240730}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -520,7 +520,7 @@ Transform:
   m_GameObject: {fileID: 4349966798275395229}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2.818}
+  m_LocalPosition: {x: 1.376, y: 0, z: 2.818}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -535,7 +535,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5940308293362077686}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -551,7 +551,7 @@ Transform:
   m_GameObject: {fileID: 8640384137163435796}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.85, y: 0, z: 0}
+  m_LocalPosition: {x: 1.361, y: 0, z: -0.239}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 5174918455651965729}
   - component: {fileID: 2114332752767459161}
   - component: {fileID: 8517449111447594402}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock_05 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

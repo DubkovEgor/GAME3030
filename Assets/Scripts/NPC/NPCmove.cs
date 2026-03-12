@@ -91,6 +91,13 @@ public class NPCMove : MonoBehaviour
 
     private void Start()
     {
+        gameObject.layer = LayerMask.NameToLayer("NPC");
+
+        int npcLayer = LayerMask.NameToLayer("NPC");
+        int decorationLayer = LayerMask.NameToLayer("Decoration");
+        Physics.IgnoreLayerCollision(npcLayer, npcLayer, true);
+        Physics.IgnoreLayerCollision(npcLayer, decorationLayer, true);
+
         if (useRigidbody)
         {
             rb = GetComponent<Rigidbody>();

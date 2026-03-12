@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3438630137501779417}
   - component: {fileID: 2442353877347783057}
   - component: {fileID: 1769123135647372774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_02_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 247945443888360185}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7163316337955361582}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5684219165783414355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,8 +187,7 @@ GameObject:
   - component: {fileID: 990127138215673555}
   - component: {fileID: 3572077912732489420}
   - component: {fileID: 5485172833262161395}
-  - component: {fileID: 8593223380933553638}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_02_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,27 +259,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8593223380933553638
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4203487331839533559}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 4.2180724, z: 1}
-  m_Center: {x: 0, y: 2.092121, z: 0}
 --- !u!1 &4661435515762455780
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,7 +273,7 @@ GameObject:
   - component: {fileID: 8611780060484911259}
   - component: {fileID: 3256846979524345764}
   - component: {fileID: 5849663597047253535}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Pine Tree
   m_TagString: Decoration
   m_Icon: {fileID: 0}
@@ -534,7 +512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5139225010783721948}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

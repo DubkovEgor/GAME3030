@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1371136547798195628}
   - component: {fileID: 826744025381141227}
   - component: {fileID: 4080759917867385667}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mushroom_01_LOD1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,8 +94,7 @@ GameObject:
   - component: {fileID: 2823155399698617072}
   - component: {fileID: 8427000155046049667}
   - component: {fileID: 7074421411145166573}
-  - component: {fileID: 4869992101617587613}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mushroom_01_LOD0 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,27 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4869992101617587613
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3188561411063066046}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.3406743, z: 0.2}
-  m_Center: {x: 0, y: 0.1702209, z: 0}
 --- !u!1 &4317446546539049196
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,8 +177,7 @@ GameObject:
   - component: {fileID: 4896147913323884515}
   - component: {fileID: 8881880463681748397}
   - component: {fileID: 6987970272752428475}
-  - component: {fileID: 2158244024749215623}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mushroom_01_LOD0 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -272,27 +249,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2158244024749215623
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4317446546539049196}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.3406743, z: 0.2}
-  m_Center: {x: 0, y: 0.1702209, z: 0}
 --- !u!1 &4385080170328260021
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,7 +261,8 @@ GameObject:
   - component: {fileID: 882770542445914717}
   - component: {fileID: -5857134060738956338}
   - component: {fileID: 5144566095164302873}
-  m_Layer: 0
+  - component: {fileID: 3570430752469868714}
+  m_Layer: 8
   m_Name: Toadstool
   m_TagString: Decoration
   m_Icon: {fileID: 0}
@@ -491,6 +448,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &3570430752469868714
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4385080170328260021}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6, y: 0.5, z: 0.6}
+  m_Center: {x: 0, y: 0.3, z: 0}
 --- !u!1 &4831928707727296616
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,7 +480,7 @@ GameObject:
   - component: {fileID: 2096306867047846575}
   - component: {fileID: 1588638166158797087}
   - component: {fileID: 7182118570464913465}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mushroom_01_LOD1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -585,7 +563,7 @@ GameObject:
   - component: {fileID: 1342704734340769970}
   - component: {fileID: 6080340177118917108}
   - component: {fileID: 2847339849958604872}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mushroom_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,8 +646,7 @@ GameObject:
   - component: {fileID: 5610622173749090815}
   - component: {fileID: 3384208936736509099}
   - component: {fileID: 9109228112611924850}
-  - component: {fileID: 8376272747481921258}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mushroom_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -741,24 +718,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8376272747481921258
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8668046474177936419}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.3406743, z: 0.2}
-  m_Center: {x: 0, y: 0.1702209, z: 0}

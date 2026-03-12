@@ -16,7 +16,7 @@ public class ObjectDestroyer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+            if (Physics.Raycast(ray, out RaycastHit hit, 200f))
             {
                 GameObject target = hit.collider.gameObject;
 
