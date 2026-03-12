@@ -44,6 +44,16 @@ public class NPCMove : MonoBehaviour
     public GameObject carryCrops;
     public GameObject carryMeat;
 
+    [Header("Tools")]
+    public GameObject toolWood;
+    public GameObject toolStone;
+    public GameObject toolGold;
+    public GameObject toolIron;
+    public GameObject toolFuel;
+    public GameObject toolBerries;
+    public GameObject toolCrops;
+    public GameObject toolMeat;
+
     public bool isAssigned { get; private set; } = false;
     public ResourceType assignedResource { get; private set; }
 
@@ -166,12 +176,17 @@ public class NPCMove : MonoBehaviour
         _state = next;
         debugState = next;
 
-        bool gatherState = next == NPCState.GatheringWood || next == NPCState.GatheringStone ||
+        bool isGathering = next == NPCState.GatheringWood || next == NPCState.GatheringStone ||
                            next == NPCState.GatheringGold || next == NPCState.GatheringIron ||
                            next == NPCState.GatheringFuel || next == NPCState.GatheringBerries ||
                            next == NPCState.GatheringCrops || next == NPCState.GatheringMeat;
 
-        if (!gatherState) UpdateAnimator();
+        if (isGathering)
+            ShowTool(assignedResource);
+        else
+            HideAllTools();
+
+        if (!isGathering) UpdateAnimator();
 
         switch (next)
         {
@@ -303,6 +318,7 @@ public class NPCMove : MonoBehaviour
 
     private IEnumerator GatherRoutine()
     {
+        HideAllTools();
         _state = NPCState.Walking;
         debugState = NPCState.Walking;
         UpdateAnimator();
@@ -331,11 +347,13 @@ public class NPCMove : MonoBehaviour
         }
 
         yield return StartCoroutine(WalkTo(targetAccessPoint.position));
-
+        ShowTool(assignedResource);
         _state = GatherStateForType(assignedResource);
         debugState = _state;
         UpdateAnimator();
         yield return new WaitForSeconds(gatherDuration);
+
+        HideAllTools();
 
         carryAmount = targetPoint.TryGather();
         targetPoint.ReleaseAccessPoint(targetAccessPoint);
@@ -374,10 +392,8 @@ public class NPCMove : MonoBehaviour
     {
         var (grid, origin, cell, size) = BuildingsGrid.Instance.GetGridData();
 
-        // Check if any obstacle is close enough to matter
         if (HasNearbyObstacle(destination, grid, origin, cell, size))
         {
-            // Use A* only when something is in the way
             if (!AStarPathfinder.HasLineOfSight(transform.position, destination, grid, origin, cell, size))
             {
                 yield return StartCoroutine(WalkPathTo(destination, grid, origin, cell, size));
@@ -385,12 +401,11 @@ public class NPCMove : MonoBehaviour
             }
         }
 
-        // Default — walk straight with natural diagonal movement
         yield return StartCoroutine(WalkStraightTo(destination));
     }
+
     private bool HasNearbyObstacle(Vector3 destination, Building[,] grid, Vector3 origin, float cellSize, Vector2Int gridSize)
     {
-        // Check cells along the path to destination in a small radius
         Vector3 dir = (destination - transform.position).normalized;
         float distance = Vector3.Distance(transform.position, destination);
         float step = cellSize;
@@ -470,6 +485,7 @@ public class NPCMove : MonoBehaviour
             targetAccessPoint = null;
         }
 
+        HideAllTools();
         AddCurrentWorker(assignedResource, -1);
         EconomyManager.Instance.currentIdleNPCs++;
         isAssigned = false;
@@ -524,7 +540,6 @@ public class NPCMove : MonoBehaviour
 
         animatorRef.SetInteger(AnimStateHash, animValue);
     }
-
     private void HideAllCarryProps()
     {
         if (carryWood) carryWood.SetActive(false);
@@ -550,6 +565,33 @@ public class NPCMove : MonoBehaviour
         }
     }
 
+    private void HideAllTools()
+    {
+        if (toolWood) toolWood.SetActive(false);
+        if (toolStone) toolStone.SetActive(false);
+       //  if (toolGold) toolGold.SetActive(false);
+       //  if (toolIron) toolIron.SetActive(false);
+       //  if (toolFuel) toolFuel.SetActive(false);
+       //  if (toolBerries) toolBerries.SetActive(false);
+       //  if (toolCrops) toolCrops.SetActive(false);
+       //  if (toolMeat) toolMeat.SetActive(false);
+    }
+
+    private void ShowTool(ResourceType type)
+    {
+        HideAllTools();
+        switch (type)
+        {
+            case ResourceType.Wood: if (toolWood) toolWood.SetActive(true); break;
+            case ResourceType.Stone: if (toolStone) toolStone.SetActive(true); break;
+           //  case ResourceType.Gold: if (toolGold) toolGold.SetActive(true); break;
+           //  case ResourceType.Iron: if (toolIron) toolIron.SetActive(true); break;
+           //  case ResourceType.Fuel: if (toolFuel) toolFuel.SetActive(true); break;
+           //  case ResourceType.Food: if (toolBerries) toolBerries.SetActive(true); break;
+           //  case ResourceType.Crops: if (toolCrops) toolCrops.SetActive(true); break;
+           //  case ResourceType.Meat: if (toolMeat) toolMeat.SetActive(true); break;
+        }
+    }
     private void AddCurrentWorker(ResourceType type, int delta)
     {
         var em = EconomyManager.Instance;
@@ -563,6 +605,7 @@ public class NPCMove : MonoBehaviour
             case ResourceType.Food: em.currentFoodWorkers += delta; break;
         }
     }
+
     private void ApplySeparation()
     {
         Collider[] nearby = Physics.OverlapSphere(transform.position, separationRadius);
@@ -584,6 +627,4 @@ public class NPCMove : MonoBehaviour
             transform.position += away * separationForce * strength * Time.deltaTime;
         }
     }
-
-
 }
