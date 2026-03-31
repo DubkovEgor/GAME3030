@@ -13,7 +13,7 @@ public class ObjectDestroyer : MonoBehaviour
     {
         if (Input.GetMouseButton(1))
             return;
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.X))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit, 200f))

@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class BrightnessController : MonoBehaviour
 {
     public Image brightnessOverlay;
@@ -11,6 +12,7 @@ public class BrightnessController : MonoBehaviour
     private void OnEnable()
     {
         float savedBrightness = PlayerPrefs.GetFloat(BRIGHTNESS_KEY, 1f);
+        savedBrightness = Mathf.Clamp(savedBrightness, 0.2f, 1f);
         brightnessSlider.value = savedBrightness;
         ApplyBrightness(savedBrightness);
 
@@ -19,6 +21,8 @@ public class BrightnessController : MonoBehaviour
 
     public void ApplyBrightness(float value)
     {
+        value = Mathf.Clamp(value, 0.2f, 1f);
+
         float overlayAlpha = 1f - value;
         Color c = brightnessOverlay.color;
         c.a = overlayAlpha;

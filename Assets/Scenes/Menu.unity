@@ -353,12 +353,15 @@ MonoBehaviour:
     Move the building preview to the desired location and place it on the map.\r\n\u2022\tManage
     your town \u2013 Monitor your resources as buildings generate income or consume
     resources.\r\n\u2022\tIncrease your population \u2013 Build houses to increase
-    the housing.\r\n\nControls:\r\n\u2022\tLeft Mouse Button: Place the selected
-    building.\r\n\u2022\tRight Mouse Button: Cancel build.\n\u2022\tRight Mouse Button
-    + Move Mouse: Rotate the camera.\n\u2022\tMouse scroll wheel: Zoom in/out.\n\u2022\tButton
-    \u201CR\u201D + Mouse Scroll Wheel: Rotate the building.\r\n\u2022\tPoint at
-    an object + Button \u201CD\u201D: Delete the object.\n\nCheats:\n\u2022\tButton
-    \u201CP\u201D: Add resources.\n"
+    the housing.\r\n\nControls:\r\n\u2022\tButtons WASD: Move camera.\n\u2022\tButtons
+    Q / R: Rotate camera. RMB + Move Mouse: Camera free rotation.\n\u2022\tLMB: Place
+    the selected building. RMB: Cancel build.\n\u2022\tButtons \"<\" / \">\"  or
+    Mouse scroll wheel: Zoom in/out.\n\u2022\tButton R / R + Mouse Scroll Wheel:
+    Rotate the building/ Free building rotation.\r\n\u2022\tPoint at an object +
+    Button \u201CX\u201D: Delete the object.\n\nCheats:\n\u2022\tButton \u201CP\u201D:
+    Add 100000 resources.\n\u2022\tButton \u201CO\u201D: NPC fast spawn.\n\u2022\tButton
+    \u201CI\u201D: 12x Speed.\n\u2022\tButton \u201CL\u201D: Start new day.\n\u2022\tButton
+    \u201CK\u201D: Start new month.\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8b5cd8c33dcc19147a64dc7b87cbdb07, type: 2}
   m_sharedMaterial: {fileID: 5915189131757618624, guid: 8b5cd8c33dcc19147a64dc7b87cbdb07, type: 2}

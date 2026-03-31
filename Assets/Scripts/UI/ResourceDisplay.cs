@@ -9,7 +9,6 @@ public class ResourceDisplay : MonoBehaviour
     [Header("Housing")]
     public Text housingText;
 
-    private int currentPopulation = 0;
 
     private void Start()
     {
@@ -20,14 +19,16 @@ public class ResourceDisplay : MonoBehaviour
             EconomyManager.Instance.OnResourcesChanged += UpdateAllTexts;
         }
     }
-    
+
     private void UpdateAllTexts()
     {
-        UpdateResourcesText();
-        UpdateHousingText();
+        if (resourceText != null) UpdateResourcesText();
+        if (housingText != null) UpdateHousingText();
     }
+
     private void UpdateResourcesText()
     {
+        if (resourceText == null) return;
         var eco = EconomyManager.Instance;
         resourceText.text = $"Food: {eco.food} ({eco.foodPerHour}/s)   " +
                             $"Wood: {eco.wood} ({eco.woodPerHour}/s)   " +
@@ -36,13 +37,9 @@ public class ResourceDisplay : MonoBehaviour
                             $"Iron: {eco.iron} ({eco.ironPerHour}/s)   " +
                             $"Gold: {eco.gold} ({eco.goldPerHour}/s)";
     }
-    public void SetCurrentPopulation(int population) 
-    {
-        currentPopulation = population;
-        UpdateHousingText();
-    }
     public void UpdateHousingText()
     {
+        if (housingText == null) return;
         housingText.text = $"Housing: {EconomyManager.Instance.currentNPCs}/{EconomyManager.Instance.housing}";
     }
     private void OnDestroy()

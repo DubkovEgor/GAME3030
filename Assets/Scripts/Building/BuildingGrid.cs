@@ -146,13 +146,24 @@ public class BuildingsGrid : MonoBehaviour
     }
     private void HandleRotation()
     {
-        if (!Input.GetKey(KeyCode.R)) return;
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            currentRotation = (currentRotation - 90 + 360) % 360;
+            ApplyRotation();
+        }
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll > 0f) currentRotation = (currentRotation + 90) % 360;
-        else if (scroll < 0f) currentRotation = (currentRotation - 90 + 360) % 360;
+        if (Input.GetKey(KeyCode.R))
+        {
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        ApplyRotation();
+            if (scroll > 0f)
+                currentRotation = (currentRotation + 90) % 360;
+            else if (scroll < 0f)
+                currentRotation = (currentRotation - 90 + 360) % 360;
+
+            if (scroll != 0f)
+                ApplyRotation();
+        }
     }
 
     private void ApplyRotation()

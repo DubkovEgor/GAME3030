@@ -22,7 +22,6 @@ public class ResearchPanel : MonoBehaviour
         Instance = this;
         _gold = startingGold;
         GetComponentsInChildren(true, _buttons);
-        closeButton?.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
     private void Start()
@@ -31,11 +30,6 @@ public class ResearchPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Open()
-    {
-        gameObject.SetActive(true);
-        RefreshAll();
-    }
 
     public void RefreshAll()
     {
@@ -54,6 +48,15 @@ public class ResearchPanel : MonoBehaviour
     public void AddGold(int amount)
     {
         _gold += amount;
+        RefreshAll();
+    }
+
+    public void ResetResearch()
+    {
+        foreach (var btn in _buttons)
+            PlayerPrefs.DeleteKey($"research_{btn.gameObject.name}");
+
+        PlayerPrefs.Save();
         RefreshAll();
     }
 }
