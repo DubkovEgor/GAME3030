@@ -34,37 +34,66 @@ public class Menu : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadScene(0);
+        LoadingManager.Instance.gameObject.SetActive(true);
+        // SceneManager.LoadScene(0);
 
+        Time.timeScale = 1f;
         SoundManager.Instance.PlaySFX("MenuButton");
         SoundManager.Instance.PlayMusic("MenuMusic");
+
+        if (LoadingManager.Instance != null)
+        {
+            LoadingManager.Instance.gameObject.SetActive(true);
+            LoadingManager.Instance.LoadScene(0);
+        }
     }
 
     public void GameScene()
     {
-        SceneManager.LoadScene(1);
         Time.timeScale = 1f;
 
         SoundManager.Instance.StopMusicAwake();
-
         SoundManager.Instance.PlaySFX("MenuButton");
         SoundManager.Instance.PlayMusic("StartAge/StartAge2");
+
+        if (LoadingManager.Instance == null)
+        {
+            Debug.LogError("LoadingManager is missing in the scene!");
+            return;
+        }
+
+        LoadingManager.Instance.gameObject.SetActive(true);
+        LoadingManager.Instance.LoadScene(1);
     }
     public void WinScene()
     {
-        SceneManager.LoadScene(3);
+        LoadingManager.Instance.gameObject.SetActive(true);
+        // SceneManager.LoadScene(3);
         Time.timeScale = 1f;
 
         SoundManager.Instance.PlaySFX("MenuButton");
         // SoundManager.Instance.PlayMusic("name");
+
+        if (LoadingManager.Instance != null)
+        {
+            LoadingManager.Instance.gameObject.SetActive(true);
+            LoadingManager.Instance.LoadScene(3);
+        }
     }
     public void LoseScene()
     {
-        SceneManager.LoadScene(2);
+        LoadingManager.Instance.gameObject.SetActive(true);
+        // SceneManager.LoadScene(2);
         Time.timeScale = 1f;
 
         SoundManager.Instance.PlaySFX("MenuButton");
         // SoundManager.Instance.PlayMusic("name");
+
+        if (LoadingManager.Instance != null)
+        {
+            LoadingManager.Instance.gameObject.SetActive(true);
+            LoadingManager.Instance.LoadScene(2);
+        }
     }
 
     public void QuitGame()
@@ -93,11 +122,18 @@ public class Menu : MonoBehaviour
     }
     public void HardLevel()
     {
-        SceneManager.LoadScene(1);
+        LoadingManager.Instance.gameObject.SetActive(true);
+        // SceneManager.LoadScene(1);
         Time.timeScale = 1f;
 
         SoundManager.Instance.PlaySFX("MenuButton");
         SoundManager.Instance.PlayMusic("GameMusic");
+
+        if (LoadingManager.Instance != null)
+        {
+            LoadingManager.Instance.gameObject.SetActive(true);
+            LoadingManager.Instance.LoadScene(1);
+        }
     }
 
 

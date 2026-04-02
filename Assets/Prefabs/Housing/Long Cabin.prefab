@@ -276,6 +276,10 @@ PrefabInstance:
       value: HouseLong
       objectReference: {fileID: 0}
     - target: {fileID: 7829259922374925851, guid: 8d61e3159f909764b8ec0edcf65f24d0, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829259922374925851, guid: 8d61e3159f909764b8ec0edcf65f24d0, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}

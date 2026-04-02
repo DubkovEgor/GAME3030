@@ -82,7 +82,13 @@ public class NPCMove : MonoBehaviour
     [Header("Separation")]
     public float separationRadius = 1.2f;
     public float separationForce = 2f;
+
     private List<Vector3> _currentPath = new List<Vector3>();
+    private Building[,] _cachedGrid;
+    private Vector3 _cachedOrigin;
+    private float _cachedCellSize;
+    private Vector2Int _cachedGridSize;
+    private bool _gridCached = false;
 
     private void Awake()
     {
@@ -151,6 +157,13 @@ public class NPCMove : MonoBehaviour
             pathMultiplier = 1f;
     }
 
+    private void RefreshGridCache()
+    {
+        (_cachedGrid, _cachedOrigin, _cachedCellSize, _cachedGridSize) =
+            BuildingsGrid.Instance.GetGridData();
+        _gridCached = true;
+    }
+
     public void AssignJob(ResourceType type)
     {
         if (isAssigned) ReleaseFromJob();
@@ -188,10 +201,8 @@ public class NPCMove : MonoBehaviour
                            next == NPCState.GatheringFuel || next == NPCState.GatheringBerries ||
                            next == NPCState.GatheringCrops || next == NPCState.GatheringMeat;
 
-        if (isGathering)
-            ShowTool(assignedResource);
-        else
-            HideAllTools();
+        if (isGathering) ShowTool(assignedResource);
+        else HideAllTools();
 
         if (!isGathering) UpdateAnimator();
 
@@ -257,6 +268,203 @@ public class NPCMove : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(minIdleTime, maxIdleTime));
         }
     }
+    private IEnumerator GatherRoutine()
+    {
+        HideAllTools();
+        _state = NPCState.Walking;
+        debugState = NPCState.Walking;
+        UpdateAnimator();
+
+        targetPoint = GatheringPointManager.Instance.FindNearest(assignedResource, transform.position);
+
+        if (targetPoint == null)
+        {
+            SetIdleAndWait();
+            yield return new WaitForSeconds(3f);
+            if (isAssigned) EnterState(GatherStateForType(assignedResource));
+            yield break;
+        }
+
+        targetAccessPoint = targetPoint.ReserveAccessPoint();
+        if (targetAccessPoint == null)
+        {
+            SetIdleAndWait();
+            yield return new WaitForSeconds(2f);
+            if (isAssigned) EnterState(GatherStateForType(assignedResource));
+            yield break;
+        }
+
+        yield return StartCoroutine(WalkTo(targetAccessPoint.position));
+
+        if (targetPoint == null || !targetPoint.gameObject.activeInHierarchy)
+        {
+            if (targetAccessPoint != null && targetPoint != null)
+                targetPoint.ReleaseAccessPoint(targetAccessPoint);
+            targetAccessPoint = null;
+            targetPoint = null;
+            if (isAssigned) EnterState(GatherStateForType(assignedResource));
+            yield break;
+        }
+
+        ShowTool(assignedResource);
+        _state = GatherStateForType(assignedResource);
+        debugState = _state;
+        UpdateAnimator();
+        yield return new WaitForSeconds(gatherDuration);
+
+        HideAllTools();
+
+        carryAmount = targetPoint.TryGather();
+        targetPoint.ReleaseAccessPoint(targetAccessPoint);
+        targetAccessPoint = null;
+
+        if (carryAmount > 0)
+            EnterState(NPCState.CarryingResources);
+        else if (isAssigned)
+            EnterState(GatherStateForType(assignedResource));
+    }
+
+    private IEnumerator CarryRoutine()
+    {
+        targetDropOff = FindNearestDropOff(assignedResource);
+
+        if (targetDropOff == null)
+        {
+            yield return new WaitForSeconds(3f);
+            if (isAssigned) EnterState(GatherStateForType(assignedResource));
+            yield break;
+        }
+
+        yield return StartCoroutine(WalkTo(targetDropOff.transform.position));
+
+        targetDropOff.Deposit(assignedResource, carryAmount);
+        carryAmount = 0;
+        HideAllCarryProps();
+
+        if (isAssigned) EnterState(GatherStateForType(assignedResource));
+        else EnterState(NPCState.Walking);
+    }
+    private IEnumerator WalkTo(Vector3 destination)
+    {
+        RefreshGridCache();
+
+        _currentPath = AStarPathfinder.FindPath(
+            transform.position, destination,
+            _cachedGrid, _cachedOrigin, _cachedCellSize, _cachedGridSize);
+
+        if (_currentPath == null || _currentPath.Count == 0)
+        {
+            yield return StartCoroutine(WalkStraightTo(destination));
+            yield break;
+        }
+
+        yield return StartCoroutine(WalkPath());
+    }
+
+    private IEnumerator WalkPath()
+    {
+        int waypointIndex = 0;
+
+        while (waypointIndex < _currentPath.Count)
+        {
+            Vector3 target = new Vector3(
+                _currentPath[waypointIndex].x,
+                transform.position.y,
+                _currentPath[waypointIndex].z);
+
+            if (Vector3.Distance(transform.position, target) <= arrivalRadius)
+            {
+                waypointIndex++;
+                continue;
+            }
+
+            if (IsWaypointBlocked(target))
+            {
+                Vector3 finalDestination = new Vector3(
+                    _currentPath[_currentPath.Count - 1].x,
+                    transform.position.y,
+                    _currentPath[_currentPath.Count - 1].z);
+
+                RefreshGridCache();
+                _currentPath = AStarPathfinder.FindPath(
+                    transform.position, finalDestination,
+                    _cachedGrid, _cachedOrigin, _cachedCellSize, _cachedGridSize);
+
+                if (_currentPath == null || _currentPath.Count == 0)
+                {
+                    yield return StartCoroutine(WalkStraightTo(finalDestination));
+                    yield break;
+                }
+
+                waypointIndex = 0;
+                continue;
+            }
+
+            Vector3 dir = (target - transform.position);
+            dir.y = 0f;
+            dir.Normalize();
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(dir, Vector3.up),
+                Time.deltaTime * turnSpeed);
+
+            float step = moveSpeed * Time.deltaTime;
+            float remaining = Vector3.Distance(transform.position, target);
+            if (step > remaining) step = remaining;
+
+            if (useRigidbody && rb != null)
+                rb.MovePosition(rb.position + dir * step);
+            else
+                transform.position += dir * step;
+
+            ApplySeparation();
+            yield return null;
+        }
+    }
+
+    private bool IsWaypointBlocked(Vector3 worldPos)
+    {
+        if (!_gridCached) return false;
+
+        int gx = Mathf.Clamp(
+            Mathf.FloorToInt((worldPos.x - _cachedOrigin.x) / _cachedCellSize),
+            0, _cachedGridSize.x - 1);
+        int gz = Mathf.Clamp(
+            Mathf.FloorToInt((worldPos.z - _cachedOrigin.z) / _cachedCellSize),
+            0, _cachedGridSize.y - 1);
+
+        return _cachedGrid[gx, gz] != null;
+    }
+
+    private IEnumerator WalkStraightTo(Vector3 destination)
+    {
+        destination.y = transform.position.y;
+
+        while (Vector3.Distance(transform.position, destination) > arrivalRadius)
+        {
+            Vector3 dir = (destination - transform.position);
+            dir.y = 0f;
+            dir.Normalize();
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(dir, Vector3.up),
+                Time.deltaTime * turnSpeed);
+
+            float step = moveSpeed * Time.deltaTime;
+            float remaining = Vector3.Distance(transform.position, destination);
+            if (step > remaining) step = remaining;
+
+            if (useRigidbody && rb != null)
+                rb.MovePosition(rb.position + dir * step);
+            else
+                transform.position += dir * step;
+
+            ApplySeparation();
+            yield return null;
+        }
+    }
 
     private void StepMove()
     {
@@ -271,14 +479,6 @@ public class NPCMove : MonoBehaviour
             rb.MovePosition(rb.position + motion);
         else
             transform.position += motion;
-    }
-
-    private void StepRotateOnly()
-    {
-        Vector3 flatDir = new Vector3(moveDirection.x, 0f, moveDirection.z).normalized;
-        if (flatDir.sqrMagnitude < 0.001f) return;
-        Quaternion targetRot = Quaternion.LookRotation(flatDir, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * (turnSpeed * 0.5f));
     }
 
     private Vector3 RandomDirectionXZ()
@@ -323,165 +523,11 @@ public class NPCMove : MonoBehaviour
         EnterState(NPCState.Walking);
     }
 
-    private IEnumerator GatherRoutine()
+    private void SetIdleAndWait()
     {
-        HideAllTools();
-        _state = NPCState.Walking;
-        debugState = NPCState.Walking;
+        _state = NPCState.Idle;
+        debugState = NPCState.Idle;
         UpdateAnimator();
-
-        targetPoint = GatheringPointManager.Instance.FindNearest(assignedResource, transform.position);
-
-        if (targetPoint == null)
-        {
-            _state = NPCState.Idle;
-            debugState = NPCState.Idle;
-            UpdateAnimator();
-            yield return new WaitForSeconds(3f);
-            if (isAssigned) EnterState(GatherStateForType(assignedResource));
-            yield break;
-        }
-
-        targetAccessPoint = targetPoint.ReserveAccessPoint();
-        if (targetAccessPoint == null)
-        {
-            _state = NPCState.Idle;
-            debugState = NPCState.Idle;
-            UpdateAnimator();
-            yield return new WaitForSeconds(2f);
-            if (isAssigned) EnterState(GatherStateForType(assignedResource));
-            yield break;
-        }
-
-        yield return StartCoroutine(WalkTo(targetAccessPoint.position));
-        ShowTool(assignedResource);
-        _state = GatherStateForType(assignedResource);
-        debugState = _state;
-        UpdateAnimator();
-        yield return new WaitForSeconds(gatherDuration);
-
-        HideAllTools();
-
-        carryAmount = targetPoint.TryGather();
-        targetPoint.ReleaseAccessPoint(targetAccessPoint);
-        targetAccessPoint = null;
-
-        if (carryAmount > 0)
-            EnterState(NPCState.CarryingResources);
-        else if (isAssigned)
-            EnterState(GatherStateForType(assignedResource));
-    }
-
-    private IEnumerator CarryRoutine()
-    {
-        targetDropOff = FindNearestDropOff(assignedResource);
-
-        if (targetDropOff == null)
-        {
-            yield return new WaitForSeconds(3f);
-            if (isAssigned) EnterState(GatherStateForType(assignedResource));
-            yield break;
-        }
-
-        yield return StartCoroutine(WalkTo(targetDropOff.transform.position));
-
-        targetDropOff.Deposit(assignedResource, carryAmount);
-        carryAmount = 0;
-        HideAllCarryProps();
-
-        if (isAssigned)
-            EnterState(GatherStateForType(assignedResource));
-        else
-            EnterState(NPCState.Walking);
-    }
-
-    private IEnumerator WalkTo(Vector3 destination)
-    {
-        var (grid, origin, cell, size) = BuildingsGrid.Instance.GetGridData();
-
-        if (HasNearbyObstacle(destination, grid, origin, cell, size))
-        {
-            if (!AStarPathfinder.HasLineOfSight(transform.position, destination, grid, origin, cell, size))
-            {
-                yield return StartCoroutine(WalkPathTo(destination, grid, origin, cell, size));
-                yield break;
-            }
-        }
-
-        yield return StartCoroutine(WalkStraightTo(destination));
-    }
-
-    private bool HasNearbyObstacle(Vector3 destination, Building[,] grid, Vector3 origin, float cellSize, Vector2Int gridSize)
-    {
-        Vector3 dir = (destination - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, destination);
-        float step = cellSize;
-        float checks = Mathf.Min(distance, 10f);
-
-        for (float d = 0; d < checks; d += step)
-        {
-            Vector3 samplePos = transform.position + dir * d;
-            Vector2Int sampleCell = new Vector2Int(
-                Mathf.Clamp(Mathf.FloorToInt((samplePos.x - origin.x) / cellSize), 0, gridSize.x - 1),
-                Mathf.Clamp(Mathf.FloorToInt((samplePos.z - origin.z) / cellSize), 0, gridSize.y - 1)
-            );
-
-            if (grid[sampleCell.x, sampleCell.y] != null)
-                return true;
-        }
-
-        return false;
-    }
-
-    private IEnumerator WalkPathTo(Vector3 destination, Building[,] grid, Vector3 origin, float cellSize, Vector2Int gridSize)
-    {
-        _currentPath = AStarPathfinder.FindPath(transform.position, destination, grid, origin, cellSize, gridSize);
-
-        foreach (var waypoint in _currentPath)
-        {
-            Vector3 target = new Vector3(waypoint.x, transform.position.y, waypoint.z);
-
-            while (Vector3.Distance(transform.position, target) > arrivalRadius)
-            {
-                Vector3 moveDir = (target - transform.position);
-                moveDir.y = 0f;
-                moveDir.Normalize();
-
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-                    Quaternion.LookRotation(moveDir, Vector3.up), Time.deltaTime * turnSpeed);
-
-                float s = moveSpeed * Time.deltaTime;
-                float remaining = Vector3.Distance(transform.position, target);
-                if (s > remaining) s = remaining;
-
-                transform.position += moveDir * s;
-                ApplySeparation();
-                yield return null;
-            }
-        }
-    }
-
-    private IEnumerator WalkStraightTo(Vector3 destination)
-    {
-        destination.y = transform.position.y;
-
-        while (Vector3.Distance(transform.position, destination) > arrivalRadius)
-        {
-            Vector3 dir = (destination - transform.position);
-            dir.y = 0f;
-            dir.Normalize();
-
-            transform.rotation = Quaternion.Slerp(transform.rotation,
-                Quaternion.LookRotation(dir, Vector3.up), Time.deltaTime * turnSpeed);
-
-            float step = moveSpeed * Time.deltaTime;
-            float remaining = Vector3.Distance(transform.position, destination);
-            if (step > remaining) step = remaining;
-
-            transform.position += dir * step;
-            ApplySeparation();
-            yield return null;
-        }
     }
 
     private void ReleaseFromJob()
@@ -524,7 +570,6 @@ public class NPCMove : MonoBehaviour
         ResourceType.Food => NPCState.GatheringBerries,
         _ => NPCState.GatheringWood
     };
-
     private void UpdateAnimator()
     {
         if (animatorRef == null) return;
@@ -547,6 +592,7 @@ public class NPCMove : MonoBehaviour
 
         animatorRef.SetInteger(AnimStateHash, animValue);
     }
+
     private void HideAllCarryProps()
     {
         if (carryWood) carryWood.SetActive(false);
@@ -576,12 +622,12 @@ public class NPCMove : MonoBehaviour
     {
         if (toolWood) toolWood.SetActive(false);
         if (toolStone) toolStone.SetActive(false);
-       //  if (toolGold) toolGold.SetActive(false);
-       //  if (toolIron) toolIron.SetActive(false);
-       //  if (toolFuel) toolFuel.SetActive(false);
-       //  if (toolBerries) toolBerries.SetActive(false);
-       //  if (toolCrops) toolCrops.SetActive(false);
-       //  if (toolMeat) toolMeat.SetActive(false);
+        // if (toolGold) toolGold.SetActive(false);
+        // if (toolIron) toolIron.SetActive(false);
+        // if (toolFuel) toolFuel.SetActive(false);
+        // if (toolBerries) toolBerries.SetActive(false);
+        // if (toolCrops) toolCrops.SetActive(false);
+        // if (toolMeat) toolMeat.SetActive(false);
     }
 
     private void ShowTool(ResourceType type)
@@ -591,12 +637,10 @@ public class NPCMove : MonoBehaviour
         {
             case ResourceType.Wood: if (toolWood) toolWood.SetActive(true); break;
             case ResourceType.Stone: if (toolStone) toolStone.SetActive(true); break;
-           //  case ResourceType.Gold: if (toolGold) toolGold.SetActive(true); break;
-           //  case ResourceType.Iron: if (toolIron) toolIron.SetActive(true); break;
-           //  case ResourceType.Fuel: if (toolFuel) toolFuel.SetActive(true); break;
-           //  case ResourceType.Food: if (toolBerries) toolBerries.SetActive(true); break;
-           //  case ResourceType.Crops: if (toolCrops) toolCrops.SetActive(true); break;
-           //  case ResourceType.Meat: if (toolMeat) toolMeat.SetActive(true); break;
+                // case ResourceType.Gold: if (toolGold) toolGold.SetActive(true); break;
+                // case ResourceType.Iron: if (toolIron) toolIron.SetActive(true); break;
+                // case ResourceType.Fuel: if (toolFuel) toolFuel.SetActive(true); break;
+                // case ResourceType.Food: if (toolBerries) toolBerries.SetActive(true); break;
         }
     }
     private void AddCurrentWorker(ResourceType type, int delta)

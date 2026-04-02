@@ -236,6 +236,10 @@ PrefabInstance:
       value: HouseSmall
       objectReference: {fileID: 0}
     - target: {fileID: 4295121449356219115, guid: 34a483c2f8b8c7842844587beccd02d3, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4295121449356219115, guid: 34a483c2f8b8c7842844587beccd02d3, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
